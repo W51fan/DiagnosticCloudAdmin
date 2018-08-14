@@ -3,7 +3,9 @@
 import Vue from 'vue';
 import App from './App';
 import Vuetify from 'vuetify';
+import store from './store/index';
 import router from './router';
+import Axios from 'axios';
 import 'font-awesome/css/font-awesome.css';  
 import './theme/default.styl';
 import VeeValidate from 'vee-validate';
@@ -35,13 +37,14 @@ Vue.use(Vuetify, {
   }
 });
 // Bootstrap application components
-
+Vue.prototype.$http = Axios;
 
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 });

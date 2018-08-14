@@ -11,8 +11,8 @@
                   <h1 class="flex my-4 primary--text">扁鹊云管理平台</h1>
                 </div>                
                 <v-form>
-                  <v-text-field append-icon="person" name="login" label="Login" type="text" v-model="model.username"></v-text-field>
-                  <v-text-field append-icon="lock" name="password" label="Password" id="password" type="password" v-model="model.password"></v-text-field>
+                  <v-text-field append-icon="person" name="login" label="admin" type="text" v-model="model.username"></v-text-field>
+                  <v-text-field append-icon="lock" name="password" label="abc123456" id="password" type="password" v-model="model.password"></v-text-field>
                 </v-form>
               </v-card-text>
               <v-card-actions>
@@ -37,34 +37,66 @@
 </template>
 
 <script>
+import base64 from "js-base64";
+
 export default {
+  components: {},
   data: () => ({
     loading: false,
     model: {
-      username: 'admin@isockde.com',
-      password: 'password'
+      username: "",
+      password: ""
     }
   }),
-
+  mounted: function() {},
   methods: {
-    login () {
+    login() {
       this.loading = true;
-      setTimeout(() => {
-        this.$router.push('/dashboard');
-      }, 1000);
+      // setTimeout(() => {
+      //   this.$router.push('/dashboard');
+      // }, 1000);
+      let $this = this;
+      let apikey = "",
+        request = {
+          user: this.model.username,
+          password: Base64.encode(this.model.password)
+        },
+        type = "POST",
+        url = "/IBUS/DAIG_SER/adminLogin";
+      let param = {
+        apikey,
+        request
+      };
+      $this
+        .$http({
+          method: type,
+          url: url,
+          data: param
+        })
+        .then(res => {
+          $this.$store.commit("logIn/getSession_id", res.data.return.session_id);
+          $this.$store.commit("logIn/getMobile", res.data.return.mobile);
+          $this.$store.commit("logIn/getEmail", res.data.return.email);
+          $this.$store.commit("logIn/getUser", $this.model.username);
+          $this.$store.commit("logIn/getRid", res.data.return.rid);
+          $this.$store.commit("logIn/getRemark", res.data.return.remark);
+          $this.$router.push("/dashboard");
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
-
 };
 </script>
 <style scoped lang="css">
-  #login {
-    height: 50%;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    content: "";
-    z-index: 0;
-  }
+#login {
+  height: 50%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: "";
+  z-index: 0;
+}
 </style>
