@@ -828,6 +828,10 @@ export default {
     getCompanysList() {
       this.loading = true;
       let $this = this;
+      let arry =[];
+      for(let i in this.labelItem){
+          arry.push($this.labelItem[i].idx);
+      }
       let apikey = "",
         request = {
           session_id: this.session_id,
@@ -845,7 +849,7 @@ export default {
           test_time: "",
           res_st_time: "",
           res_en_time: "",
-          flag: ""
+          flag: arry
         },
         type = "POST",
         url = "/IBUS/DAIG_SER/get_all_enterprise";
