@@ -81,7 +81,7 @@ export default [
         /* webpackMode: "lazy-once" */
         `@/pages/Dashboard.vue`
       )
-  },
+  }, 
   {
     path: '/companyManger',
     meta: {
@@ -93,6 +93,19 @@ export default [
         /* webpackChunkName: "routes" */
         /* webpackMode: "lazy-once" */
         `@/pages/layout/CompanyManger.vue`
+      )
+  },
+  {
+    path: '/companyDetails',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'CompanyDetails',
+    component: () =>
+      import (
+        /* webpackChunkName: "routes" */
+        /* webpackMode: "lazy-once" */
+        `@/pages/layout/CompanyDetails.vue`
       )
   },
   // {

@@ -106,9 +106,15 @@ export default {
     }    
   },
   created () {
+    let $this = this;
     window.getApp.$on('APP_DRAWER_TOGGLED', () => {
       this.drawer = (!this.drawer);
     });
+    // menu.forEach(element => {
+    //   if(!element.hidden){
+    //     $this.menus.push(element);
+    //   }
+    // });
   },
   
 

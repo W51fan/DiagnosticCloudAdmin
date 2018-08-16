@@ -58,7 +58,7 @@
   </div>
 </template>
 <script>
-import AppDrawer from '@/components/AppDrawer';
+import AppDrawer from '@/components/LeftNav';
 import AppToolbar from '@/components/AppToolbar';
 import AppFab from '@/components/AppFab';
 import PageHeader from '@/components/PageHeader';

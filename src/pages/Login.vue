@@ -16,22 +16,24 @@
                 </v-form>
               </v-card-text>
               <v-card-actions>
-                <!-- <v-btn icon>
-                  <v-icon color="blue">fa fa-facebook-square fa-lg</v-icon>
-                </v-btn>
-                <v-btn icon>
-                  <v-icon color="red">fa fa-google fa-lg</v-icon>
-                </v-btn>
-                <v-btn icon>
-                  <v-icon color="light-blue">fa fa-twitter fa-lg</v-icon>
-                </v-btn> -->
-                <!-- <v-spacer></v-spacer> -->
                 <v-btn block color="primary" @click="login" :loading="loading">登录</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
         </v-layout>
       </v-container>
+      <v-layout row justify-center>
+        <v-dialog v-model="showAlert" persistent max-width="290">
+        <v-card>
+            <v-card-title class="headline">提示</v-card-title>
+            <v-card-text>{{AlertMessage}}</v-card-text>
+            <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn  flat @click.native="showAlert = false">确定</v-btn>
+            </v-card-actions>
+        </v-card>
+        </v-dialog>
+      </v-layout>
     </v-content>
   </v-app>
 </template>
@@ -46,7 +48,9 @@ export default {
     model: {
       username: "",
       password: ""
-    }
+    },
+    showAlert: false,
+    AlertMessage: ""
   }),
   mounted: function() {},
   methods: {
@@ -74,13 +78,22 @@ export default {
           data: param
         })
         .then(res => {
-          $this.$store.commit("logIn/getSession_id", res.data.return.session_id);
-          $this.$store.commit("logIn/getMobile", res.data.return.mobile);
-          $this.$store.commit("logIn/getEmail", res.data.return.email);
-          $this.$store.commit("logIn/getUser", $this.model.username);
-          $this.$store.commit("logIn/getRid", res.data.return.rid);
-          $this.$store.commit("logIn/getRemark", res.data.return.remark);
-          $this.$router.push("/dashboard");
+          $this.loading = false;
+          if (res.data.errorCode !== 0) {
+            $this.showAlert = true;
+            $this.AlertMessage = res.data.errorMsg;
+          } else {
+            $this.$store.commit(
+              "logIn/getSession_id",
+              res.data.return.session_id
+            );
+            $this.$store.commit("logIn/getMobile", res.data.return.mobile);
+            $this.$store.commit("logIn/getEmail", res.data.return.email);
+            $this.$store.commit("logIn/getUser", $this.model.username);
+            $this.$store.commit("logIn/getRid", res.data.return.rid);
+            $this.$store.commit("logIn/getRemark", res.data.return.remark);
+            $this.$router.push("/dashboard");
+          }
         })
         .catch(error => {
           console.log(error);

@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import logIn from './modules/logIn';
+import company from './modules/company';
 
 Vue.use(Vuex);
 
@@ -48,7 +49,8 @@ const actions = {};
 
 const store = new Vuex.Store({
   modules: {
-    logIn
+    logIn,
+    company
   },
   actions,
   state,
