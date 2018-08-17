@@ -56,9 +56,7 @@ export default {
   methods: {
     login() {
       this.loading = true;
-      // setTimeout(() => {
-      //   this.$router.push('/dashboard');
-      // }, 1000);
+
       let $this = this;
       let apikey = "",
         request = {
@@ -83,6 +81,8 @@ export default {
             $this.showAlert = true;
             $this.AlertMessage = res.data.errorMsg;
           } else {
+            $this.$store.commit("SET_TOKEN", res.data.return.session_id);
+            
             $this.$store.commit(
               "logIn/getSession_id",
               res.data.return.session_id
