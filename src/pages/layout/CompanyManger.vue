@@ -341,7 +341,7 @@
                                             tile
                                             style="height: 100%; width: 100%;"
                                             >
-                                            <img :src="'/IMAGE/'+item.logo">
+                                            <img :src="item.logo!==''?item.logo!==null?'/IMAGE/'+item.logo:'/static/imgs/noImage.png':'/static/imgs/noImage.png'">
                                         </v-avatar>
                                     </v-flex>
                                     <v-flex lg3 sm3 xs3 style="text-align: left;">
@@ -395,9 +395,9 @@
 </template>
 
 <style lang="stylus" scoped>
-.theme--light .v-text-field--solo-inverted.v-text-field--solo, .application .theme--light.v-text-field--solo-inverted.v-text-field--solo {
-    background: #e8e8e8;
-}
+// .theme--light .v-text-field--solo-inverted.v-text-field--solo, .application .theme--light.v-text-field--solo-inverted.v-text-field--solo {
+//     background: white;
+// }
 </style>
 
 <script>

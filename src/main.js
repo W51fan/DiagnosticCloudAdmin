@@ -11,10 +11,13 @@ import './theme/default.styl';
 import VeeValidate from 'vee-validate';
 import colors from 'vuetify/es5/util/colors';
 import Truncate from 'lodash.truncate';
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 Vue.config.productionTip = false;
 // Helpers
 // Global filters
 Vue.filter('truncate', Truncate);
+Vue.use(ElementUI);
 Vue.use(VeeValidate, { fieldsBagName: 'formFields' });
 Vue.use(Vuetify, {
   // theme: {

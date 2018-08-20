@@ -9,19 +9,19 @@
                         <v-flex lg12 md12 sm12 xs12 align-end flexbox>
                             <v-layout>
                                 <v-flex  lg3 md2 sm2 xs2 style="padding: 0 4%;">
-                                    <img :src="'/IMAGE/'+companyDetails.logo" style="width: 100%;height: 100%;" >
+                                    <img :src="companyDetails.logo!==''?companyDetails.logo!==null?'/IMAGE/'+companyDetails.logo:'/static/imgs/noImage.png':'/static/imgs/noImage.png'" style="width: 100%;height: 100%;" >
                                 </v-flex>
                                 <v-flex  lg9 md10 sm10 xs10 >
                                     <div class="headline">
                                         <span>{{companyDetails.enterpriseName}}</span>
                                     </div>
-                                    <div>
+                                    <div style="padding: 10px 0;">
                                         <span>管理员：</span><span>{{companyDetails.user}}</span>
                                     </div>
-                                    <div>
+                                    <div style="padding: 10px 0;">
                                         <span>创建时间：</span><span>{{companyDetails.ent_register_time}}</span>
                                     </div>
-                                    <div>
+                                    <div style="padding: 10px 0;">
                                         <span>最近测评时间：</span><span>{{companyDetails.testTime}}</span>
                                     </div>
                                 </v-flex>
@@ -37,7 +37,7 @@
 
     <v-layout style="padding-top:30px">
         <v-flex  lg1 md1 hidden-md-and-down></v-flex>
-        <v-flex  lg10 md10 >
+        <v-flex  lg10 md12 sm12 xs12>
             <v-layout>
                 <v-flex lg2 md2 sm2 xs2 style="text-align: center;background-color: white;border-right: 2px solid #efefef;font-size: larger;" >
                     <div>
@@ -181,19 +181,164 @@
                                 </v-flex>
                             </v-layout>
                             
-                            
+                            <v-layout>
+                                <v-flex  lg12 md12 sm12 xs12 style="margin: 10px 0 0 4%;">
+                                    <div style="text-align: left;">
+                                         <span style="font-weight: 600;">备注（可选）：</span>
+                                         <i class="material-icons" @click="editMarked()" style="cursor: pointer;">edit</i>
+                                         <i class="material-icons" @click="saveMarked()" style="cursor: pointer;">save</i>
+                                    </div>
+                                </v-flex>
+                            </v-layout>
+                            <v-layout>
+                                <v-flex  lg12 md12 sm12 xs12 style="margin: 10px 0 0 4%;">
+                                    <v-layout row wrap>
+                                       <v-flex lg8 md12 sm12 xs12>
+                                            <v-textarea
+                                            solo
+                                            name="marked"
+                                            :disabled="markedReadonly"
+                                            autofocus="autofocus"
+                                            no-resize
+                                            label="请输入备注"
+                                            v-model="remark"
+                                            ></v-textarea>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-flex>
+                            </v-layout>
                            
                         </v-card-text>
                     </v-card>
                 </v-flex>
-                <v-flex  lg10 md10 sm10 xs10 v-if="showPanel == 2">
+                <v-flex  lg10 md10 sm10 xs10 v-if="showPanel == 2" style="background-color: white;">
                     <div>
-                        测评中心
+                         <v-toolbar  tabs style="background-color: white;">
+                             <v-tabs
+                                slot="extension"
+                                v-model="currentItem"
+                                color="white"
+                                align-with-title>
+                                <v-tab
+                                    v-for="item in textitems"
+                                    @click="switchTest(item.state)"
+                                    :key="item.state"
+                                    >
+                                    {{ item.value }}
+                                </v-tab>
+                                <v-spacer></v-spacer>
+                                <v-text-field 
+                                    class="mx-3"
+                                    flat
+                                    label="搜索"
+                                    single-line
+                                    style="padding: 4px;"
+                                ></v-text-field>
+                                <v-btn icon @click="searchTest()">
+                                    <v-icon>search</v-icon>
+                                </v-btn>
+                            </v-tabs>    
+                        </v-toolbar>
                     </div>
+                    <v-layout>
+                        <v-flex  lg12 md12 sm12 xs12>
+                            <v-card flat v-for="item in textShowArray" :key="item.idx" hover ripple="true" style="margin: 5px 10px;">
+                                <v-layout row wrap style="margin: 10px 0;padding: 10px;">
+                                            <v-flex lg5 md6 sm12 xs12 style="text-align: left;margin: 10px 0;">
+                                                <div>
+                                                    <div style="font-weight: 600;font-size: 16px;">{{item.name}}</div>
+                                                    <div >{{item.remark}}</div>
+                                                </div>
+                                            </v-flex>
+                                            <v-flex lg3 md6 sm12 xs12 style="text-align: left;margin: 10px 0;">
+                                                <div>
+                                                    <div>
+                                                        <span>测评时间：</span> 
+                                                        <span>{{item.startTime}}</span>
+                                                    </div>
+                                                    <div v-if="item.endTime!==null && item.endTime!==''">
+                                                        <span>完成时间：</span> 
+                                                        <span>{{item.endTime}}</span>
+                                                    </div>
+                                                </div>
+                                            </v-flex>
+                                            <v-flex lg2 md6 sm6 xs6 style="text-align: left;margin: 10px 0;">
+                                                <div style="margin-top: 15px;">
+                                                    <el-progress :percentage="item.complete_degree" v-if="item.completeStatus == 0"></el-progress>
+                                                    <el-progress :percentage="100" status="success" v-if="item.completeStatus == 1"></el-progress>
+                                                </div>
+                                            </v-flex>
+                                            <v-flex lg2 md6 sm6 xs6 >
+                                                <div style="display: inline-flex;margin-top: 20px;">
+                                                    <div style="color: #228fff;font-weight: 400;padding-right: 10px;cursor: pointer;" @click="viewAnswer()">看问卷</div>
+                                                    <div style="color: #228fff;font-weight: 400;padding-right: 10px;cursor: pointer;" v-if="item.endTime!==null && item.endTime!==''" @click="viewReport()">看报告</div>
+                                                </div>
+                                            </v-flex>
+                                </v-layout>
+                            </v-card>
+                        </v-flex>
+                    </v-layout>
                 </v-flex>
-                <v-flex  lg10 md10 sm10 xs10 v-if="showPanel == 3">
+                <v-flex  lg10 md10 sm10 xs10 v-if="showPanel == 3" style="background-color: white;">
                     <div>
-                        企业用户
+                        <v-card flat v-for="item in user_info" :key="item.idx" hover ripple="true">
+                            <v-layout row wrap style="margin: 10px 0;padding: 10px;">
+                                <v-flex lg1 md4 sm3 xs3>
+                                    <v-avatar
+                                        tile
+                                        style="height: 100%; width: 100%;"
+                                        >
+                                        <img :src="item.image!==''?item.image!==null?'/IMAGE/'+item.image:'/static/imgs/ic_user.png':'/static/imgs/ic_user.png'">
+                                    </v-avatar>
+                                </v-flex>
+                               
+                                <v-flex lg2 md4 sm7 xs7 style="text-align: left;">
+                                    <div style="display: inline-flex;">
+                                        <div>{{item.name!==''?item.name!==null?item.name:'--':'--'}}</div>
+                                        <div style="padding: 0 10px;" v-if="item.gender ==0">
+                                            <i class="fa fa-venus" aria-hidden="true"></i>
+                                        </div>
+                                        <div style="padding: 0 10px;" v-if="item.gender ==1">
+                                            <i class="fa fa-mars" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span>{{item.department!==''?item.department!==null?item.department:'部门':'部门'}}</span>
+                                        <span>|</span> 
+                                        <span>{{item.position!==''?item.position!==null?item.position:'职位':'职位'}}</span>
+                                    </div>
+                                </v-flex>
+                                <v-flex lg1 md4 sm2 xs2 style="text-align: left;">
+                                    <div>{{item.role_name}}</div>
+                                </v-flex>
+                                <v-flex lg3 md6 sm6 xs6 text-align: left;>
+                                    <div>
+                                        <div style="display: inline-flex;">
+                                            <i class="material-icons">phone</i>
+                                            <div>{{item.mobile}}</div>    
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="display: inline-flex;">
+                                            <i class="material-icons">mail</i>
+                                            <div>{{item.email}}</div>    
+                                        </div>
+                                    </div>
+                                </v-flex>
+                                <v-flex lg2 md6 sm6 xs6 text-align: left;>
+                                    <div>
+                                        <span>出生日期：</span>
+                                        <span>{{item.birthday!==''?item.birthday!==null?item.birthday:'--/--':'--/--'}}</span>
+                                    </div>
+                                </v-flex>
+                                <v-flex lg3 md6 sm6 xs12 style="text-align: left;">
+                                    <div style="display: inline-flex;">
+                                        <div>注册时间:</div>
+                                        <div>{{item.createTime}}</div>
+                                    </div>
+                                </v-flex>
+                            </v-layout>
+                        </v-card>
                     </div>
                 </v-flex>
             </v-layout>
@@ -209,6 +354,12 @@
 .isActiveItem {
   background-color: rgba(173, 173, 173, 0.4);
   border-right: 1px solid #9e9e9e;
+  box-shadow: 0 1px 1px 0 rgba(60, 64, 67, 0.08),
+    0 1px 3px 1px rgba(60, 64, 67, 0.16);
+}
+.v-toolbar {
+  box-shadow: 0 0 rgba(0, 0, 0, 0), 0 0 0 rgba(0, 0, 0, 0),
+    0 0 0 rgba(0, 0, 0, 0);
 }
 </style>
 
@@ -237,22 +388,78 @@ export default {
     //   industryL5: "",
     //   logo: "./image/89caf08896e311e88beb000c291f0997.png",
     //   province: "天津市",
-    //   remark: null,
+    //   remark: "123",
     //   shortName: "EHZ",
     //   user: "HELLO KITTY",
     //   scale: "3.000人以上",
     //   income: "30.000万元以上",
     //   user_id: 18
     // },
+    // user_info: [
+    //   {
+    //     idx: 145,
+    //     name: 233,
+    //     image: null,
+    //     email: "chengyi@ehz.cn",
+    //     mobile: "15712055291",
+    //     department: "技术与产品中心",
+    //     position: "产品",
+    //     birthday: "1912-2-1",
+    //     gender: 1,
+    //     role_name: "管理员",
+    //     createTime: "2018-08-19 20:15:31"
+    //   }
+    // ],
+    // textShowArray: [
+    //   {
+    //     idx: 322,
+    //     user_id: 142,
+    //     id: 4,
+    //     name: "3C电子行业",
+    //     startTime: "2018-08-10 00:19:03",
+    //     endTime: "",
+    //     completeStatus: 0,
+    //     complete_degree: 76,
+    //     remark: "适用于电子元器件、IC、配件、电子中间件、终端产品等3C电子行业"
+    //   },
+    //   {
+    //     idx: 326,
+    //     user_id: 146,
+    //     id: 5,
+    //     name: "3C电子行业",
+    //     startTime: "2018-08-20 00:19:03",
+    //     endTime: "2018-08-20 00:27:38",
+    //     completeStatus: 1,
+    //     remark: "适用于电子元器件、IC、配件、电子中间件、终端产品等3C电子行业"
+    //   }
+    // ],
+    currentItem: "tab-Web",
+    textitems: [
+      { state: 3, value: "全部" },
+      { state: 2, value: "测评中" },
+      { state: 1, value: "已完成" }
+    ],
+    testCenter: [],
     selectLabels: [
       { idx: 3, flagName: "汽车零部件" },
       { idx: 4, flagName: "制造业" }
     ],
+    autofocus: true,
     editing: null,
     items: [],
     model: [],
     search: null,
-    showPanel:1
+    showPanel: 1,
+    markedReadonly: true,
+    remark: "",
+    TestState: "",
+    serachKey: "",
+    TestState: 3,
+    user_info: [],
+    testingArray: [],
+    testendArray: [],
+    EnterpriseTestAllInfo: [],
+    textShowArray: []
   }),
   watch: {
     model(val, prev) {
@@ -261,11 +468,10 @@ export default {
       this.model = val.map(v => {
         if (typeof v === "string") {
           v = {
-            text: v,
+            text: v
           };
 
           this.items.push(v);
-
         }
 
         return v;
@@ -275,14 +481,20 @@ export default {
   computed: {
     companyDetails() {
       return this.$store.state.company.companyDetails;
+    },
+    session_id() {
+      return this.$store.state.logIn.session_id;
     }
   },
-  mounted(){
-      let $this = this;
-      this.companyDetails.flag.forEach(element => {
-          this.model.push({text:element.flagName});
-          this.items.push({text:element.flagName});
-      });
+  mounted: function() {
+    let $this = this;
+    this.companyDetails.flag.forEach(element => {
+      $this.model.push({ text: element.flagName });
+      $this.items.push({ text: element.flagName });
+    });
+    this.remark =
+      this.companyDetails.remark !== null ? this.companyDetails.remark : "";
+    this.getEnterpriseUser();
   },
   methods: {
     edit(index, item) {
@@ -295,7 +507,7 @@ export default {
       }
     },
     filter(item, queryText, itemText) {
-    //   if (item.header) return false;
+      //   if (item.header) return false;
 
       const hasValue = val => (val != null ? val : "");
 
@@ -309,8 +521,128 @@ export default {
           .indexOf(query.toString().toLowerCase()) > -1
       );
     },
-    switchPanel(e){
-        this.showPanel =e;
+    switchPanel(e) {
+      this.showPanel = e;
+      if (e == 2) {
+        this.getEnterpriseTestAllInfo();
+      }
+    },
+    switchTest(e) {
+      this.TestState = e;
+      this.TestState == 1
+        ? (this.textShowArray = this.testendArray)
+        : this.TestState == 2
+          ? (this.textShowArray = this.testingArray)
+          : (this.textShowArray = this.EnterpriseTestAllInfo);
+    },
+    getEnterpriseUser() {
+      this.loading = true;
+      let $this = this;
+      let apikey = "",
+        request = {
+          session_id: this.session_id,
+          idx: this.companyDetails.idx
+        },
+        type = "POST",
+        url = "/IBUS/DAIG_SER/get_enterprise_user";
+      let param = {
+        apikey,
+        request
+      };
+      $this
+        .$http({
+          method: type,
+          url: url,
+          data: param
+        })
+        .then(res => {
+          $this.loading = false;
+          $this.user_info = res.data.return.user_info;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    editMarked() {
+      this.markedReadonly = !this.markedReadonly;
+    },
+    saveMarked() {
+      this.loading = true;
+      let $this = this;
+      let apikey = "",
+        request = {
+          session_id: this.session_id,
+          idx: this.companyDetails.idx,
+          remark: this.remark
+        },
+        type = "POST",
+        url = "/IBUS/DAIG_SER/modify_enterprise_mark";
+      let param = {
+        apikey,
+        request
+      };
+      $this
+        .$http({
+          method: type,
+          url: url,
+          data: param
+        })
+        .then(res => {
+          $this.loading = false;
+          $this.markedReadonly = !$this.markedReadonly;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    getEnterpriseTestAllInfo() {
+      this.loading = true;
+      let $this = this;
+      let apikey = "",
+        request = {
+          session_id: this.session_id,
+          key: "",
+          enterprise_id: this.companyDetails.idx,
+          status: ""
+        },
+        type = "POST",
+        url = "/IBUS/DAIG_SER/getEnterpriseTestAllInfo";
+      let param = {
+        apikey,
+        request
+      };
+      $this
+        .$http({
+          method: type,
+          url: url,
+          data: param
+        })
+        .then(res => {
+          $this.loading = false;
+          $this.EnterpriseTestAllInfo = res.data.return;
+          $this.testingArray = res.data.return.doing;
+          $this.testendArray = res.data.return.done;
+          $this.EnterpriseTestAllInfo = $this.testingArray.concat(
+            $this.testendArray
+          );
+          $this.TestState == 1
+            ? ($this.textShowArray = $this.testendArray)
+            : $this.TestState == 2
+              ? ($this.textShowArray = $this.testingArray)
+              : ($this.textShowArray = $this.EnterpriseTestAllInfo);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    viewAnswer() {
+      console.log("viewanswer");
+    },
+    viewReport() {
+      console.log("viewReport");
+    },
+    searchTest() {
+      console.log("searchTest");
     }
   }
 };
