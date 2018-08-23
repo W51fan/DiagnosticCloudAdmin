@@ -3,6 +3,9 @@ import Vuex from 'vuex';
 
 import logIn from './modules/logIn';
 import company from './modules/company';
+import answerPage from './modules/answerPage';
+import reportPage from './modules/reportPage';
+
 
 Vue.use(Vuex);
 
@@ -50,7 +53,9 @@ const actions = {};
 const store = new Vuex.Store({
   modules: {
     logIn,
-    company
+    company,
+    answerPage,
+    reportPage,
   },
   actions,
   state,

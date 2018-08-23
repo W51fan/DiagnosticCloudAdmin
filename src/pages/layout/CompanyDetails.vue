@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-layout>
-        <v-flex  lg12 md12 sm12 xs12>
+        <v-flex lg12 md12 sm12 xs12>
             <v-card>
                 <v-container fill-height fluid>
                     <v-layout>
@@ -22,7 +22,7 @@
                                         <span>创建时间：</span><span>{{companyDetails.ent_register_time}}</span>
                                     </div>
                                     <div style="padding: 10px 0;">
-                                        <span>最近测评时间：</span><span>{{companyDetails.testTime}}</span>
+                                        <span>最近测评时间：</span><span>{{companyDetails.recently_testTime}}</span>
                                     </div>
                                 </v-flex>
                             </v-layout>
@@ -250,15 +250,23 @@
                                                     <div >{{item.remark}}</div>
                                                 </div>
                                             </v-flex>
-                                            <v-flex lg3 md6 sm12 xs12 style="text-align: left;margin: 10px 0;">
+                                            <v-flex lg3 md6 sm12 xs12 style="text-align: left;margin: 10px 0;" v-if="item.endTime!==null && item.endTime!==''">
                                                 <div>
                                                     <div>
                                                         <span>测评时间：</span> 
                                                         <span>{{item.startTime}}</span>
                                                     </div>
-                                                    <div v-if="item.endTime!==null && item.endTime!==''">
+                                                    <div>
                                                         <span>完成时间：</span> 
                                                         <span>{{item.endTime}}</span>
+                                                    </div>
+                                                </div>
+                                            </v-flex>
+                                            <v-flex lg3 md6 sm12 xs12 style="text-align: left;margin: 22px 0;" v-else>
+                                                <div>
+                                                    <div>
+                                                        <span>测评时间：</span> 
+                                                        <span>{{item.startTime}}</span>
                                                     </div>
                                                 </div>
                                             </v-flex>
@@ -268,10 +276,10 @@
                                                     <el-progress :percentage="100" status="success" v-if="item.completeStatus == 1"></el-progress>
                                                 </div>
                                             </v-flex>
-                                            <v-flex lg2 md6 sm6 xs6 >
+                                            <v-flex lg2 md6 sm6 xs6 style="text-align: center;">
                                                 <div style="display: inline-flex;margin-top: 20px;">
-                                                    <div style="color: #228fff;font-weight: 400;padding-right: 10px;cursor: pointer;" @click="viewAnswer()">看问卷</div>
-                                                    <div style="color: #228fff;font-weight: 400;padding-right: 10px;cursor: pointer;" v-if="item.endTime!==null && item.endTime!==''" @click="viewReport()">看报告</div>
+                                                    <div style="color: #228fff;font-weight: 400;padding-right: 10px;cursor: pointer;" @click="viewAnswer(item)">看问卷</div>
+                                                    <div style="color: #228fff;font-weight: 400;padding-right: 10px;cursor: pointer;" v-if="item.endTime!==null && item.endTime!==''" @click="viewReport(item)">看报告</div>
                                                 </div>
                                             </v-flex>
                                 </v-layout>
@@ -346,6 +354,19 @@
         
         
         <v-flex  lg1 md1 hidden-md-and-down></v-flex>
+    </v-layout>
+
+    <v-layout row justify-center>
+        <v-dialog v-model="showAlert" persistent max-width="290">
+            <v-card>
+                    <v-card-title class="headline">提示</v-card-title>
+                    <v-card-text>{{AlertMessage}}</v-card-text>
+                    <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn  flat @click.native="showAlert = false">确定</v-btn>
+                    </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-layout>
   </div>
 </template>
@@ -433,6 +454,7 @@ export default {
     //     remark: "适用于电子元器件、IC、配件、电子中间件、终端产品等3C电子行业"
     //   }
     // ],
+    
     currentItem: "tab-Web",
     textitems: [
       { state: 3, value: "全部" },
@@ -459,7 +481,10 @@ export default {
     testingArray: [],
     testendArray: [],
     EnterpriseTestAllInfo: [],
-    textShowArray: []
+    textShowArray: [],
+    showAlert: false,
+    AlertMessage: "",
+    TreedataArray: []
   }),
   watch: {
     model(val, prev) {
@@ -635,11 +660,82 @@ export default {
           console.log(error);
         });
     },
-    viewAnswer() {
-      console.log("viewanswer");
+    get_tree_struct_data(id) {
+      this.loading = true;
+      let $this = this;
+      let apikey = "",
+        request = {
+          id: id
+        },
+        type = "POST",
+        url = "/IBUS/DAIG_SER/get_tree_struct_data";
+      let param = {
+        apikey,
+        request
+      };
+      $this
+        .$http({
+          method: type,
+          url: url,
+          data: param
+        })
+        .then(res => {
+          $this.loading = false;
+          $this.$store.commit("answerPage/getTreedataArray", res.data.tree_struct);
+          $this.$router.push("/answerPage");
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
-    viewReport() {
-      console.log("viewReport");
+    viewAnswer(e) {
+      this.loading = true;
+      let $this = this;
+      let apikey = "",
+        request = {
+          session_id: this.session_id,
+          id: e.id,
+          user_id: e.user_id,
+          completeStatus: e.completeStatus
+        },
+        type = "POST",
+        url = "/IBUS/DAIG_SER/get_test_all_info";
+      let param = {
+        apikey,
+        request
+      };
+      $this
+        .$http({
+          method: type,
+          url: url,
+          data: param
+        })
+        .then(res => {
+          if (res.data.errorCode !== 0) {
+            $this.loading = false;
+            $this.showAlert = true;
+            $this.AlertMessage = res.data.errorMsg;
+          } else {
+            $this.loading = false;
+            $this.$store.commit("answerPage/getAnswerDetails", res.data);
+            $this.$store.commit("answerPage/getTestName", e.name);
+            $this.$store.commit(
+              "answerPage/getEnterpriseName",
+              $this.companyDetails.enterpriseName
+            );
+            $this.$store.commit(
+              "answerPage/getEnterpriseLogo",
+              $this.companyDetails.logo
+            );
+            $this.get_tree_struct_data(e.id);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    viewReport(e) {
+      this.$router.push("/reportPage");
     },
     searchTest() {
       console.log("searchTest");

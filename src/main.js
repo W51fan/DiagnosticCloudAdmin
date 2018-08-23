@@ -13,10 +13,15 @@ import colors from 'vuetify/es5/util/colors';
 import Truncate from 'lodash.truncate';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import Echarts from "echarts";
+import VCharts from 'v-charts';
+
+
 Vue.config.productionTip = false;
 // Helpers
 // Global filters
 Vue.filter('truncate', Truncate);
+
 Vue.use(ElementUI);
 Vue.use(VeeValidate, { fieldsBagName: 'formFields' });
 Vue.use(Vuetify, {
@@ -40,7 +45,9 @@ Vue.use(Vuetify, {
   }
 });
 // Bootstrap application components
+Vue.use(VCharts);
 Vue.prototype.$http = Axios;
+Vue.prototype.$echarts = Echarts;
 
 
 /* eslint-disable no-new */
