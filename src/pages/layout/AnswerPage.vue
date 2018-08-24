@@ -22,7 +22,7 @@
                                                 </v-flex>
                                                 <v-flex lg5 md10 sm10 xs10 style="margin: 12px 0;">
                                                     <div style="padding: 10px 0;">
-                                                        <el-progress :percentage="Math.floor(answerDetails.answered_count/answerDetails.count*100)" ></el-progress>
+                                                        <el-progress :percentage="Math.floor(answerDetails.answered_count-1/answerDetails.count*100)" ></el-progress>
                                                     </div>
                                                 </v-flex>
                                                 <v-flex lg2 md2 sm2 xs2 style="text-align: center;">

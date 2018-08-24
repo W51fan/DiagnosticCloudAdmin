@@ -504,6 +504,7 @@ export default {
   },
   mounted: function() {
     this.getStatisticEnterprise();
+    this.getCompanysList();
   },
   created: function() {
     this.getCityData();

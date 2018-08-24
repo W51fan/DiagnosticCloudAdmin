@@ -108,6 +108,7 @@
                                             :search-input.sync="search"
                                             hide-selected
                                             label="选择标签"
+                                            change="changeFlag"
                                             multiple
                                             small-chips
                                             solo>
@@ -454,7 +455,7 @@ export default {
     //     remark: "适用于电子元器件、IC、配件、电子中间件、终端产品等3C电子行业"
     //   }
     // ],
-    
+
     currentItem: "tab-Web",
     textitems: [
       { state: 3, value: "全部" },
@@ -488,6 +489,7 @@ export default {
   }),
   watch: {
     model(val, prev) {
+      let $this = this;
       if (val.length === prev.length) return;
 
       this.model = val.map(v => {
@@ -497,10 +499,21 @@ export default {
           };
 
           this.items.push(v);
+          $this.add_flag_for_enterprise(v.text);
         }
 
         return v;
       });
+
+      if(val.length < prev.length){
+          let text;
+          prev.forEach(item => {
+              if (val.indexOf(item)== -1){
+                  text =  item
+              }   
+          });
+          $this.delete_flag_for_enterprise(text.text);
+      }
     }
   },
   computed: {
@@ -660,6 +673,71 @@ export default {
           console.log(error);
         });
     },
+    add_flag_for_enterprise(e) {
+      this.loading = true;
+      let $this = this;
+      let apikey = "",
+        request = {
+          session_id: this.session_id,
+          flag: e,
+          idx: this.companyDetails.idx
+        },
+        type = "POST",
+        url = "/IBUS/DAIG_SER/add_flag_for_enterprise";
+      let param = {
+        apikey,
+        request
+      };
+      $this
+        .$http({
+          method: type,
+          url: url,
+          data: param
+        })
+        .then(res => {
+          if (res.data.errorCode !== 0) {
+            $this.showAlert = true;
+            $this.AlertMessage = res.data.errorMsg;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    delete_flag_for_enterprise (e){
+        this.loading = true;
+      let $this = this;
+      let apikey = "",
+        request = {
+          session_id: this.session_id,
+          flag: e,
+          idx: this.companyDetails.idx
+        },
+        type = "POST",
+        url = "/IBUS/DAIG_SER/delete_flag_for_enterprise";
+      let param = {
+        apikey,
+        request
+      };
+      $this
+        .$http({
+          method: type,
+          url: url,
+          data: param
+        })
+        .then(res => {
+          if (res.data.errorCode !== 0) {
+            $this.showAlert = true;
+            $this.AlertMessage = res.data.errorMsg;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    changeFlag(e){
+        console.log(e);
+    },
     get_tree_struct_data(id) {
       this.loading = true;
       let $this = this;
@@ -681,7 +759,10 @@ export default {
         })
         .then(res => {
           $this.loading = false;
-          $this.$store.commit("answerPage/getTreedataArray", res.data.tree_struct);
+          $this.$store.commit(
+            "answerPage/getTreedataArray",
+            res.data.tree_struct
+          );
           $this.$router.push("/answerPage");
         })
         .catch(error => {

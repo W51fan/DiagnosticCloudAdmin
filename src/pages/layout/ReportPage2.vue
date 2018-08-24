@@ -1,350 +1,287 @@
 <template>
    <div>
-        <v-layout>
-            <v-flex lg12 md12 sm12 xs12>
-                <v-card>
-                    <v-container fill-height fluid>
-                        <v-layout row wrap>
-                            <v-flex lg12 md12 sm12 xs12 align-end flexbox>
-                                <v-layout>
-                                    <v-flex lg3 md3 sm3 xs3 style="padding: 0 3% 0 0;max-height: 82px;">
-                                        <img :src="enterpriseLogo!==''?enterpriseLogo!==null?'/IMAGE/'+enterpriseLogo:'/static/imgs/noImage.png':'/static/imgs/noImage.png'" style="width: 100%;height: 100%;" >
-                                    </v-flex>
-                                    <v-flex lg9 md9 sm9 xs9 >
-                                        <v-layout row wrap>
-                                            <v-flex lg5 md10 sm10 xs10 >
-                                                    <div class="headline">
-                                                        <span>{{enterpriseName}}</span>
-                                                    </div>
-                                                    <div style="padding: 10px 0;font-size: 20px;">
-                                                        <span>{{testName}}</span>
-                                                    </div>
-                                                </v-flex>
-                                                <v-flex lg5 md10 sm10 xs10 style="margin: 12px 0;">
-                                                    <div style="padding: 10px 0;">
-                                                       <span>报告完成时间：</span>
-                                                    </div>
-                                                </v-flex>
-                                                <v-flex lg2 md2 sm2 xs2 style="text-align: center;">
-                                                    <div style="padding: 10px 0;cursor: pointer;" @click="close()">
-                                                        <v-icon x-large>highlight_off</v-icon>
-                                                    </div>
-                                                </v-flex>
-                                        </v-layout>
-                                    </v-flex>
-                                </v-layout>
-                            </v-flex>
-
-                            
-                        </v-layout>
-                    </v-container>
-
+        <h2 style="text-align: center;margin: 30px 0;">
+            {{reportData.reportName}}
+        </h2>
+        <v-layout row wrap>
+            <v-flex lg1 md1 sm1 xs1></v-flex>
+            <v-flex lg10 md10 sm10 xs10>
+                <div>
+                    <v-btn color="info">企业基本信息</v-btn>
                     <v-flex lg12 md12 sm12 xs12>
                         <v-divider></v-divider>
                     </v-flex>
-
-                    <h2 style="text-align: center;margin: 30px 0;">
-                        {{reportData.reportName}}
-                    </h2>
-                    <v-layout row wrap>
-                        <v-flex lg1 md1 sm1 xs1></v-flex>
-                        <v-flex lg10 md10 sm10 xs10>
-                            <div>
-                                <v-btn color="info">企业基本信息</v-btn>
-                                <v-flex lg12 md12 sm12 xs12>
-                                    <v-divider></v-divider>
-                                </v-flex>
-                                <div>
-                                    <h3  style="text-align: center;margin: 10px 0;">{{reportData.enterpriseName}}</h3>
-                                    <v-layout row wrap>
-                                        <v-flex lg6 md6 sm6 xs6 style="text-align:center;margin:10px 0;">
-                                            <span>收入规模：</span><span>{{reportData.scale}}</span>
-                                        </v-flex>
-                                        <v-flex lg6 md6 sm6 xs6 style="text-align:center;margin:10px 0;">
-                                            <span>人员规模:</span><span>{{reportData.income}}</span>
-                                        </v-flex>
-                                        <v-flex lg6 md6 sm6 xs6 style="text-align:center;margin:10px 0;">
-                                            <span>企业区域：</span><span>{{reportData.province}}</span><span>/</span><span>{{reportData.city}}</span><span>/</span><span>{{reportData.area}}</span>
-                                        </v-flex>
-                                        <v-flex lg6 md6 sm6 xs6 style="text-align:center;margin:10px 0;">
-                                            <span>行业类别：</span><span>{{reportData.industryL1}}</span>
-                                        </v-flex>
-                                    </v-layout>
-                                </div>
-                            </div>
-                        </v-flex>
-                        <v-flex lg1 md1 sm1 xs1></v-flex>
-                    </v-layout>
-
-                    <v-layout row wrap>
-                        <v-flex lg1 md1 sm1 xs1></v-flex>
-                        <v-flex lg10 md10 sm10 xs10>
-                            <div>
-                                <v-btn color="info">整体结果</v-btn>
-                                <v-flex lg12 md12 sm12 xs12>
-                                    <v-divider></v-divider>
-                                </v-flex>
-                                <div>
-                                    <h3  style="margin: 10px 0;">企业能力整体成熟度</h3>
-                                    <v-layout row wrap>
-                                        <v-flex lg12 md12 sm12 xs12>
-                                            <div id="chartOption1" style="width:100%;height:400px"></div>
-                                        </v-flex>
-                                        <v-flex lg12 md12 sm12 xs12 style="margin:0 0 10px 0;">
-                                            <div style="margin: 10px 30px 0px;">
-                                                <div style="margin: 10px;">
-                                                    <span>贵公司的整体水平超过了</span>
-                                                    <span style="color:red;font-size:14px;font-weight: 600;">34%</span>
-                                                    <span>的企业，期望水平超过了</span>
-                                                    <span style="color:green;font-size:14px;font-weight: 600;">86%</span>
-                                                    <span>的企业；</span>
-                                                </div>
-                                                <div style="margin: 10px;">
-                                                    <span>在制造维度上，企业超过了</span>
-                                                    <span style="color:red;font-size:14px;font-weight: 600;">50%</span>
-                                                    <span>的企业，期望水平超过了</span>
-                                                    <span style="color:green;font-size:14px;font-weight: 600;">86%</span>
-                                                    <span>的企业；</span>
-                                                </div>
-                                                <div style="margin: 10px;">
-                                                    <span>在智能维度上，企业超过了</span>
-                                                    <span style="color:red;font-size:14px;font-weight: 600;">30%</span>
-                                                    <span>的企业，期望水平超过了</span>
-                                                    <span style="color:green;font-size:14px;font-weight: 600;">86%</span>
-                                                    <span>的企业；</span>
-                                                </div>
-                                            </div>
-                                        </v-flex>
-                                    </v-layout>
-                                </div>
-                            </div>
-                        </v-flex>
-                        <v-flex lg1 md1 sm1 xs1></v-flex>
-                    </v-layout>
-
-                    <v-layout row wrap>
-                        <v-flex lg1 md1 sm1 xs1></v-flex>
-                        <v-flex lg10 md10 sm10 xs10>
-                            <div>
-                                <v-btn color="info">综合分析</v-btn>
-                                <v-flex lg12 md12 sm12 xs12>
-                                    <v-divider></v-divider>
-                                </v-flex>
-                                <div>
-                                    <h3  style="margin: 10px 0;">制造维度模块分析</h3>
-                                    <v-layout row wrap>
-                                        <v-flex lg12 md12 sm12 xs12>
-                                            <div id="chartOption2" style="width:100%;height:400px"></div>
-                                        </v-flex>
-                                        <!-- <v-flex lg3 md1 sm1 xs1></v-flex> -->
-                                        <v-flex lg12 md12 sm12 xs12 style="margin:10px 0;">
-                                            <div style="margin: 30px 0;">
-                                                <v-layout row wrap>
-                                                    <v-flex v-for="item in level" :key="item.lev" lg1 hidden-lg-and-down></v-flex>
-                                                    <v-flex v-for="item in level" :key="item.lev" style="margin: 10px 0;" lg4 md6 sm12 xs12>
-                                                        <span style="font-size:16px;font-weight: 600;margin: 10px;">{{item.name}}</span>
-                                                        <span>该模块的能力成熟度为：</span><span style="color:red;font-size:14px;font-weight: 600;">{{item.scorePercent}}%</span>
-                                                        <span style="margin-left:20px;">目标：</span><span style="color:green;font-size:14px;font-weight: 600;">{{(item.expectScore / item.total).toFixed(2) * 100}}%</span>
-                                                    </v-flex>
-                                                    <v-flex v-for="item in level" :key="item.lev" lg1 hidden-lg-and-down></v-flex>
-                                                </v-layout>
-                                            </div>
-                                        </v-flex>
-                                        <!-- <v-flex lg4 md4 sm1 xs1></v-flex> -->
-                                    </v-layout>
-                                </div>
-                                <v-flex lg12 md12 sm12 xs12 style="margin: 30px 0;">
-                                    <v-divider></v-divider>
-                                </v-flex>
-                                <div>
-                                    <h5>制造维度同行业分析</h5>
-                                    <v-layout row wrap>
-                                        <v-flex lg12 md12 sm12 xs12>
-                                            <div id="chartOption3" style="width:100%;height:400px"></div>
-                                        </v-flex> 
-                                    </v-layout>
-                                    
-                                    <div style="margin: 10px;">
-                                        <span>您的企业制造维度综合能力超过了</span>
-                                        <span style="color:red;font-size:14px;font-weight: 600;">38%</span>
-                                        <span>的企业</span>
-                                    </div>
-                                </div>
-                                <v-flex lg12 md12 sm12 xs12 style="margin: 30px 0;">
-                                    <v-divider></v-divider>
-                                </v-flex>
-                                <div>
-                                    <h5>制造维度同地区分析</h5>
-                                    <v-layout row wrap>
-                                        <v-flex lg12 md12 sm12 xs12>
-                                            <div id="chartOption4" style="width:100%;height:400px"></div>
-                                        </v-flex> 
-                                    </v-layout>
-                                    <div style="margin: 10px;">
-                                        <span>您的企业制造维度综合能力超过了</span>
-                                        <span style="color:red;font-size:14px;font-weight: 600;">38%</span>
-                                        <span>的企业</span>
-                                    </div>
-                                </div>
-                                <v-flex lg12 md12 sm12 xs12 style="margin: 30px 0;">
-                                    <v-divider></v-divider>
-                                </v-flex>
-                                <div>
-                                    <h5>制造维度同地区分析</h5>
-                                    <v-layout row wrap>
-                                        <v-flex lg12 md12 sm12 xs12>
-                                            <div id="chartOption5" style="width:100%;height:400px"></div>
-                                        </v-flex> 
-                                    </v-layout>
-                                    <div style="margin: 10px;">
-                                        <span>您的企业制造维度综合能力超过了</span>
-                                        <span style="color:red;font-size:14px;font-weight: 600;">38%</span>
-                                        <span>的企业</span>
-                                    </div>
-                                </div>
-                                <v-flex lg12 md12 sm12 xs12 style="margin: 30px 0;">
-                                    <v-divider></v-divider>
-                                </v-flex>
-                                <div>
-                                    <h5>制造维度同地区分析</h5>
-                                    <v-layout row wrap>
-                                        <v-flex lg12 md12 sm12 xs12>
-                                            <div id="chartOption6" style="width:100%;height:400px"></div>
-                                        </v-flex> 
-                                    </v-layout>
-                                    <div style="margin: 10px;">
-                                        <span>您的企业制造维度综合能力超过了</span>
-                                        <span style="color:red;font-size:14px;font-weight: 600;">38%</span>
-                                        <span>的企业</span>
-                                    </div>
-                                </div>
-                                <v-flex lg12 md12 sm12 xs12 style="margin: 30px 0;">
-                                    <v-divider></v-divider>
-                                </v-flex>
-                                <div>
-                                    <h5>制造维度指标解读及分析</h5>
-                                    <v-layout row wrap>
-                                        <v-flex lg12 md12 sm12 xs12>
-                                            <ve-bar :data="chartData7" width="100%" height="800px" ref="tab1bar"></ve-bar>
-                                        </v-flex>
-                                    </v-layout>
-                                </div>
-                                <v-flex lg12 md12 sm12 xs12 style="margin: 30px 0;">
-                                    <v-divider></v-divider>
-                                </v-flex>
-                                <v-btn color="info">综合分析</v-btn>
-                                <v-flex lg12 md12 sm12 xs12>
-                                    <v-divider></v-divider>
-                                </v-flex>
-                                <div>
-                                    <h3  style="margin: 10px 0;">智能维度模块分析</h3>
-                                    <v-layout row wrap>
-                                        <v-flex lg12 md12 sm12 xs12>
-                                            <div id="chartOption13" style="width:100%;height:400px"></div>
-                                        </v-flex>
-                                        <!-- <v-flex lg3 md3 sm1 xs1></v-flex> -->
-                                        <v-flex lg12 md12 sm12 xs12 style="margin:10px 0;">
-                                            <div style="margin: 30px 0;">
-                                                <v-layout row wrap>
-                                                    <v-flex v-for="item in level" :key="item.lev" lg1 hidden-lg-and-down></v-flex>
-                                                    <v-flex v-for="item in level" :key="item.lev" style="margin: 10px 0;" lg4 md6 sm12 xs12>
-                                                        <span style="font-size:16px;font-weight: 600;margin: 10px;">{{item.name}}</span>
-                                                        <span>该模块的能力成熟度为：</span><span style="color:red;font-size:14px;font-weight: 600;">{{item.scorePercent}}%</span>
-                                                        <span style="margin-left:20px;">目标：</span><span style="color:green;font-size:14px;font-weight: 600;">{{(item.expectScore / item.total).toFixed(2) * 100}}%</span>
-                                                    </v-flex>
-                                                    <v-flex v-for="item in level" :key="item.lev" lg1 hidden-lg-and-down></v-flex>
-                                                </v-layout>
-                                            </div>
-                                        </v-flex>
-                                        <!-- <v-flex lg4 md4 sm1 xs1></v-flex> -->
-                                    </v-layout>
-                                </div>
-                                <v-flex lg12 md12 sm12 xs12 style="margin: 30px 0;">
-                                    <v-divider></v-divider>
-                                </v-flex>
-                                <div>
-                                    <h5>智能维度同行业分析</h5>
-                                    <v-layout row wrap>
-                                        <v-flex lg12 md12 sm12 xs12>
-                                            <div id="chartOption8" style="width:100%;height:400px"></div>
-                                        </v-flex> 
-                                    </v-layout>
-                                    <div style="margin: 10px;">
-                                        <span>您的企业智能维度综合能力超过了</span>
-                                        <span style="color:red;font-size:14px;font-weight: 600;">38%</span>
-                                        <span>的企业</span>
-                                    </div>
-                                </div>
-                                <v-flex lg12 md12 sm12 xs12 style="margin: 30px 0;">
-                                    <v-divider></v-divider>
-                                </v-flex>
-                                <div>
-                                    <h5>智能维度同地区分析</h5>
-                                    <v-layout row wrap>
-                                        <v-flex lg12 md12 sm12 xs12>
-                                            <div id="chartOption9" style="width:100%;height:400px"></div>
-                                        </v-flex> 
-                                    </v-layout>
-                                    
-                                    <div style="margin: 10px;">
-                                        <span>您的企业智能维度综合能力超过了</span>
-                                        <span style="color:red;font-size:14px;font-weight: 600;">38%</span>
-                                        <span>的企业</span>
-                                    </div>
-                                </div>
-                                <v-flex lg12 md12 sm12 xs12 style="margin: 30px 0;">
-                                    <v-divider></v-divider>
-                                </v-flex>
-                                <div>
-                                    <h5>智能维度同地区分析</h5>
-                                    <v-layout row wrap>
-                                        <v-flex lg12 md12 sm12 xs12>
-                                            <div id="chartOption10" style="width:100%;height:400px"></div>
-                                        </v-flex> 
-                                    </v-layout>
-                                    
-                                   <div style="margin: 10px;">
-                                        <span>您的企业智能维度综合能力超过了</span>
-                                        <span style="color:red;font-size:14px;font-weight: 600;">38%</span>
-                                        <span>的企业</span>
-                                    </div>
-                                </div>
-                                <v-flex lg12 md12 sm12 xs12 style="margin: 30px 0;">
-                                    <v-divider></v-divider>
-                                </v-flex>
-                                <div>
-                                    <h5>智能维度同地区分析</h5>
-                                    <v-layout row wrap>
-                                        <v-flex lg12 md12 sm12 xs12>
-                                            <div id="chartOption11" style="width:100%;height:400px"></div>
-                                        </v-flex> 
-                                    </v-layout>
-                                    
-                                    <div style="margin: 10px;">
-                                        <span>您的企业智能维度综合能力超过了</span>
-                                        <span style="color:red;font-size:14px;font-weight: 600;">38%</span>
-                                        <span>的企业</span>
-                                    </div>
-                                </div>
-                                <v-flex lg12 md12 sm12 xs12 style="margin: 30px 0;">
-                                    <v-divider></v-divider>
-                                </v-flex>
-                                <div>
-                                    <h5>智能维度指标解读及分析</h5>
-                                    <v-layout row wrap>
-                                        <v-flex lg12 md12 sm12 xs12>
-                                            <ve-bar :data="chartData12" width="100%" height="800px" ref="tab1bar12"></ve-bar>
-                                        </v-flex>
-                                    </v-layout>
-                                </div>
-                            </div>
-                        </v-flex>
-                        <v-flex lg1 md1 sm1 xs1></v-flex>
-                    </v-layout>
-
-                </v-card>
+                    <div>
+                        <h3  style="text-align: center;margin: 10px 0;">{{reportData.enterpriseName}}</h3>
+                        <v-layout row wrap>
+                            <v-flex lg6 md6 sm6 xs6 style="text-align:center;margin:10px 0;">
+                                <span>收入规模：</span><span>{{reportData.scale}}</span>
+                            </v-flex>
+                            <v-flex lg6 md6 sm6 xs6 style="text-align:center;margin:10px 0;">
+                                <span>人员规模:</span><span>{{reportData.income}}</span>
+                            </v-flex>
+                            <v-flex lg6 md6 sm6 xs6 style="text-align:center;margin:10px 0;">
+                                <span>企业区域：</span><span>{{reportData.province}}</span><span>/</span><span>{{reportData.city}}</span><span>/</span><span>{{reportData.area}}</span>
+                            </v-flex>
+                            <v-flex lg6 md6 sm6 xs6 style="text-align:center;margin:10px 0;">
+                                <span>行业类别：</span><span>{{reportData.industryL1}}</span>
+                            </v-flex>
+                        </v-layout>
+                    </div>
+                </div>
             </v-flex>
-        </v-layout>           
+             <v-flex lg1 md1 sm1 xs1></v-flex>
+        </v-layout>
+
+        <v-layout row wrap>
+            <v-flex lg1 md1 sm1 xs1></v-flex>
+            <v-flex lg10 md10 sm10 xs10>
+                <div>
+                    <v-btn color="info">整体结果</v-btn>
+                    <v-flex lg12 md12 sm12 xs12 style="margin:30px 0;">
+                        <v-divider></v-divider>
+                    </v-flex>
+                    <div>
+                        <h3  style="margin: 10px 0;">企业能力整体成熟度</h3>
+                        <v-layout row wrap>
+                            <v-flex lg10 md10 sm10 xs10>
+                                <div id="chartOption1" style="width:100%;height:400px"></div>
+                            </v-flex>
+                            <v-flex lg12 md12 sm12 xs12 style="margin:10px 0;">
+                                <div style="margin: 30px 0;">
+                                    <div>贵公司的整体水平超过了34%的企业，期望水平超过了86%的企业；</div>
+                                    <div>在制造维度上，企业超过了50%的企业，期望水平超过了86%的企业；</div>
+                                    <div>在智能维度上，企业超过了30%的企业，期望水平超过了86%的企业；</div>
+                                </div>
+                            </v-flex>
+                        </v-layout>
+                    </div>
+                </div>
+            </v-flex>
+             <v-flex lg1 md1 sm1 xs1></v-flex>
+        </v-layout>
+        
+        <v-layout row wrap>
+            <v-flex lg1 md1 sm1 xs1></v-flex>
+            <v-flex lg10 md10 sm10 xs10>
+                <div>
+                    <v-btn color="info">综合分析</v-btn>
+                    <v-flex lg12 md12 sm12 xs12 style="margin:30px 0;">
+                        <v-divider></v-divider>
+                    </v-flex>
+                    <div>
+                        <h3  style="margin: 10px 0;">制造维度模块分析</h3>
+                        <v-layout row wrap>
+                            <v-flex lg10 md10 sm10 xs10>
+                                <div id="chartOption2" style="width:100%;height:400px"></div>
+                            </v-flex>
+                            <!-- <v-flex lg3 md3 sm1 xs1></v-flex> -->
+                            <v-flex lg12 md12 sm12 xs12 style="margin:10px 0;">
+                                <div style="margin: 30px 0;">
+                                    <v-layout row wrap>
+                                        <v-flex v-for="item in level" :key="item.lev" lg1 hidden-lg-and-down></v-flex>
+                                        <v-flex v-for="item in level" :key="item.lev" style="margin: 10px 0;" lg4 md6 sm12 xs12>
+                                            <span style="font-size:16px;font-weight: 600;margin: 10px;">{{item.name}}</span>
+                                            <span>该模块的能力成熟度为：</span><span style="color:red;font-size:14px;font-weight: 600;">{{item.scorePercent}}%</span>
+                                            <span style="margin-left:20px;">目标：</span><span style="color:green;font-size:14px;font-weight: 600;">{{(item.expectScore / item.total).toFixed(2) * 100}}%</span>
+                                        </v-flex>
+                                        <v-flex v-for="item in level" :key="item.lev" lg1 hidden-lg-and-down></v-flex>
+                                    </v-layout>
+                                </div>
+                            </v-flex>
+                            <!-- <v-flex lg4 md4 sm1 xs1></v-flex> -->
+                        </v-layout>
+                    </div>
+                    <v-flex lg12 md12 sm12 xs12 style="margin:30px 0;">
+                        <v-divider></v-divider>
+                    </v-flex>
+                    <div>
+                        <h5>制造维度同行业分析</h5>
+                        <v-layout row wrap>
+                            <v-flex lg10 md10 sm10 xs10>
+                                <div id="chartOption3" style="width:100%;height:400px"></div>
+                            </v-flex> 
+                        </v-layout>
+                        
+                        <div style="margin: 10px;">
+                            <span>您的企业制造维度综合能力超过了</span>
+                            <span style="color:red;font-size:14px;font-weight: 600;">38%</span>
+                            <span>的企业</span>
+                        </div>
+                    </div>
+                    <v-flex lg12 md12 sm12 xs12 style="margin:30px 0;">
+                        <v-divider></v-divider>
+                    </v-flex>
+                    <div>
+                        <h5>制造维度同地区分析</h5>
+                        <v-layout row wrap>
+                            <v-flex lg10 md10 sm10 xs10>
+                                <div id="chartOption4" style="width:100%;height:400px"></div>
+                            </v-flex> 
+                        </v-layout>
+                        <div style="margin: 10px;">
+                            <span>您的企业制造维度综合能力超过了</span>
+                            <span style="color:red;font-size:14px;font-weight: 600;">38%</span>
+                            <span>的企业</span>
+                        </div>
+                    </div>
+                    <v-flex lg12 md12 sm12 xs12 style="margin:30px 0;">
+                        <v-divider></v-divider>
+                    </v-flex>
+                    <div>
+                        <h5>制造维度同地区分析</h5>
+                        <v-layout row wrap>
+                            <v-flex lg10 md10 sm10 xs10>
+                                <div id="chartOption5" style="width:100%;height:400px"></div>
+                            </v-flex> 
+                        </v-layout>
+                        <div style="margin: 10px;">
+                            <span>您的企业制造维度综合能力超过了</span>
+                            <span style="color:red;font-size:14px;font-weight: 600;">38%</span>
+                            <span>的企业</span>
+                        </div>
+                    </div>
+                    <v-flex lg12 md12 sm12 xs12 style="margin:30px 0;">
+                        <v-divider></v-divider>
+                    </v-flex>
+                    <div>
+                        <h5>制造维度同地区分析</h5>
+                        <v-layout row wrap>
+                            <v-flex lg10 md10 sm10 xs10>
+                                <div id="chartOption6" style="width:100%;height:400px"></div>
+                            </v-flex> 
+                        </v-layout>
+                        <div style="margin: 10px;">
+                            <span>您的企业制造维度综合能力超过了</span>
+                            <span style="color:red;font-size:14px;font-weight: 600;">38%</span>
+                            <span>的企业</span>
+                        </div>
+                    </div>
+                    <v-flex lg12 md12 sm12 xs12 style="margin:30px 0;">
+                        <v-divider></v-divider>
+                    </v-flex>
+                    <div>
+                        <h5>制造维度指标解读及分析</h5>
+                        <v-layout row wrap>
+                            <v-flex lg10 md10 sm10 xs10>
+                                <ve-bar :data="chartData7" width="100%" height="800px" ref="tab1bar"></ve-bar>
+                            </v-flex>
+                        </v-layout>
+                    </div>
+                    <v-flex lg12 md12 sm12 xs12 style="margin:30px 0;">
+                        <v-divider></v-divider>
+                    </v-flex>
+                    <v-btn color="info">综合分析</v-btn>
+                    <v-flex lg12 md12 sm12 xs12>
+                        <v-divider></v-divider>
+                    </v-flex>
+                    <div>
+                        <h3  style="margin: 10px 0;">智能维度模块分析</h3>
+                        <v-layout row wrap>
+                            <v-flex lg10 md10 sm10 xs10>
+                                <div id="chartOption13" style="width:100%;height:400px"></div>
+                            </v-flex>
+                            <!-- <v-flex lg3 md3 sm1 xs1></v-flex> -->
+                            <v-flex lg12 md12 sm12 xs12 style="margin:10px 0;">
+                                <div style="margin: 30px 0;">
+                                                <v-layout row wrap>
+                                                    <v-flex v-for="item in level" :key="item.lev" lg1 hidden-lg-and-down></v-flex>
+                                                    <v-flex v-for="item in level" :key="item.lev" style="margin: 10px 0;" lg4 md6 sm12 xs12>
+                                                        <span style="font-size:16px;font-weight: 600;margin: 10px;">{{item.name}}</span>
+                                                        <span>该模块的能力成熟度为：</span><span style="color:red;font-size:14px;font-weight: 600;">{{item.scorePercent}}%</span>
+                                                        <span style="margin-left:20px;">目标：</span><span style="color:green;font-size:14px;font-weight: 600;">{{(item.expectScore / item.total).toFixed(2) * 100}}%</span>
+                                                    </v-flex>
+                                                    <v-flex v-for="item in level" :key="item.lev" lg1 hidden-lg-and-down></v-flex>
+                                                </v-layout>
+                                </div>
+                            </v-flex>
+                            <!-- <v-flex lg4 md4 sm1 xs1></v-flex> -->
+                        </v-layout>
+                    </div>
+                    <v-flex lg12 md12 sm12 xs12 style="margin:30px 0;">
+                        <v-divider></v-divider>
+                    </v-flex>
+                    <div>
+                        <h5>智能维度同行业分析</h5>
+                        <v-layout row wrap>
+                            <v-flex lg10 md10 sm10 xs10>
+                                <div id="chartOption8" style="width:100%;height:400px"></div>
+                            </v-flex> 
+                        </v-layout>
+                        
+                        <div style="margin: 10px;">
+                            <span>您的企业智能维度综合能力超过了</span>
+                            <span style="color:red;font-size:14px;font-weight: 600;">38%</span>
+                            <span>的企业</span>
+                        </div>
+                    </div>
+                    <v-flex lg12 md12 sm12 xs12 style="margin:30px 0;">
+                        <v-divider></v-divider>
+                    </v-flex>
+                    <div>
+                        <h5>智能维度同地区分析</h5>
+                        <v-layout row wrap>
+                            <v-flex lg10 md10 sm10 xs10>
+                                <div id="chartOption9" style="width:100%;height:400px"></div>
+                            </v-flex> 
+                        </v-layout>
+                        
+                        <div style="margin: 10px;">
+                            <span>您的企业智能维度综合能力超过了</span>
+                            <span style="color:red;font-size:14px;font-weight: 600;">38%</span>
+                            <span>的企业</span>
+                        </div>
+                    </div>
+                    <v-flex lg12 md12 sm12 xs12 style="margin:30px 0;">
+                        <v-divider></v-divider>
+                    </v-flex>
+                    <div>
+                        <h5>智能维度同地区分析</h5>
+                        <v-layout row wrap>
+                            <v-flex lg10 md10 sm10 xs10>
+                                <div id="chartOption10" style="width:100%;height:400px"></div>
+                            </v-flex> 
+                        </v-layout>
+                        
+                        <div style="margin: 10px;">
+                            <span>您的企业智能维度综合能力超过了</span>
+                            <span style="color:red;font-size:14px;font-weight: 600;">38%</span>
+                            <span>的企业</span>
+                        </div>
+                    </div>
+                    <v-flex lg12 md12 sm12 xs12 style="margin:30px 0;">
+                        <v-divider></v-divider>
+                    </v-flex>
+                    <div>
+                        <h5>智能维度同地区分析</h5>
+                        <v-layout row wrap>
+                            <v-flex lg10 md10 sm10 xs10>
+                                <div id="chartOption11" style="width:100%;height:400px"></div>
+                            </v-flex> 
+                        </v-layout>
+                        
+                        <div style="margin: 10px;">
+                            <span>您的企业智能维度综合能力超过了</span>
+                            <span style="color:red;font-size:14px;font-weight: 600;">38%</span>
+                            <span>的企业</span>
+                        </div>
+                    </div>
+                    <v-flex lg12 md12 sm12 xs12 style="margin:30px 0;">
+                        <v-divider></v-divider>
+                    </v-flex>
+                    <div>
+                        <h5>智能维度指标解读及分析</h5>
+                        <v-layout row wrap>
+                            <v-flex lg10 md10 sm10 xs10>
+                                <ve-bar :data="chartData12" width="100%" height="800px" ref="tab1bar12"></ve-bar>
+                            </v-flex>
+                        </v-layout>
+                    </div>
+                </div>
+            </v-flex>
+             <v-flex lg1 md1 sm1 xs1></v-flex>
+        </v-layout>
+
    </div>
 </template>
 
@@ -354,9 +291,6 @@ export default {
   name: "reportPage",
   // props: ["reportParm"],
   data: () => ({
-    testName: "3C电子行业",
-    enterpriseName: "华制",
-    enterpriseLogo: "",
     reportData: {
       reportName: "XX公司XX模块测评报告",
       enterpriseName: "XX科技股份有限公司",
@@ -993,7 +927,7 @@ export default {
   methods: {
     showChart1() {
       this.option1 = {
-        backgroundColor: "#ffffff",
+        backgroundColor: "#fafafa",
         legend: {
           data: ["期望", "实际", "其他企业"],
           left: "center"
@@ -1208,7 +1142,7 @@ export default {
       this.chartData2.rows.push(expertData);
       this.chartData2.rows.push(currentData);
       this.option2 = {
-        backgroundColor: "#ffffff",
+        backgroundColor: "#fafafa",
         legend: {
           top: 20,
           left: 20,
@@ -1343,7 +1277,7 @@ export default {
       });
 
       this.option3 = {
-        backgroundColor: "#ffffff",
+        backgroundColor: "#fafafa",
         legend: {
           top: 20,
           left: 20,
@@ -1488,7 +1422,7 @@ export default {
       });
 
       this.option4 = {
-        backgroundColor: "#ffffff",
+        backgroundColor: "#fafafa",
         legend: {
           top: 20,
           left: 20,
@@ -1633,7 +1567,7 @@ export default {
       });
 
       this.option5 = {
-        backgroundColor: "#ffffff",
+        backgroundColor: "#fafafa",
         legend: {
           top: 20,
           left: 20,
@@ -1778,7 +1712,7 @@ export default {
       });
 
       this.option6 = {
-        backgroundColor: "#ffffff",
+        backgroundColor: "#fafafa",
         legend: {
           top: 20,
           left: 20,
@@ -1943,7 +1877,7 @@ export default {
       });
 
       this.option8 = {
-        backgroundColor: "#ffffff",
+        backgroundColor: "#fafafa",
         legend: {
           top: 20,
           left: 20,
@@ -2088,7 +2022,7 @@ export default {
       });
 
       this.option9 = {
-        backgroundColor: "#ffffff",
+        backgroundColor: "#fafafa",
         legend: {
           top: 20,
           left: 20,
@@ -2233,7 +2167,7 @@ export default {
       });
 
       this.option10 = {
-        backgroundColor: "#ffffff",
+        backgroundColor: "#fafafa",
         legend: {
           top: 20,
           left: 20,
@@ -2378,7 +2312,7 @@ export default {
       });
 
       this.option11 = {
-        backgroundColor: "#ffffff",
+        backgroundColor: "#fafafa",
         legend: {
           top: 20,
           left: 20,
@@ -2522,7 +2456,7 @@ export default {
       this.chartData13.rows.push(expertData);
       this.chartData13.rows.push(currentData);
       this.option13 = {
-        backgroundColor: "#ffffff",
+        backgroundColor: "#fafafa",
         legend: {
           top: 20,
           left: 20,
@@ -2606,10 +2540,7 @@ export default {
         this.mychart13.resize();
       });
     },
-    getReport_datas() {},
-    close() {
-      this.$router.push("/CompanyDetails");
-    }
+    getReport_datas() {}
   },
   computed: {
     reportParm() {
