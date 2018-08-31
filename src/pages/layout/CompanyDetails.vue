@@ -816,6 +816,15 @@ export default {
         });
     },
     viewReport(e) {
+      this.$store.commit("reportPage/getReportParm", {
+          key:"evaluationId",value:e.id
+      });
+      this.$store.commit("reportPage/getReportParm", {
+          key:"enterpriseId",value:this.companyDetails.idx
+      });
+      this.$store.commit("reportPage/getReportParm", {
+          key:"idx",value:e.idx
+      });
       this.$router.push("/reportPage");
     },
     searchTest() {

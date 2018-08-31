@@ -15,7 +15,7 @@
                     <mini-statistic
                         icon="fa-tasks"
                         title="测评企业"
-                        :sub-title="industry_count"
+                        :sub-title="test_ent"
                         color="cyan"      
                     >
                     </mini-statistic>           
@@ -24,7 +24,7 @@
                     <mini-statistic
                         icon="fa-industry"
                         title="涉及行业"
-                        :sub-title="test_ent"
+                        :sub-title="industry_count"
                         color="pink"      
                     >
                     </mini-statistic>            

@@ -897,19 +897,20 @@ export default {
     }
   }),
   mounted: function() {
-    // var request = {
-    //   enterprise_id: this.reportParm.enterprise_id,
-    //   idx: this.reportParm.idx,
-    //   session_id: this.session_id
-    // };
-    // var apikey = "";
-    // var param = {
-    //   apikey,
-    //   request
-    // };
-    // var type = "post";
-    // var url = "/IBUS/DAIG_SYS/get_report_datas";
-    // this.getReport_datas(type, url, param);
+   var request = {
+      enterprise_id: this.reportParm.datas.enterprise_id,
+      id: this.reportParm.datas.idx,
+      evaluationId:this.reportParm.datas.evaluationId,
+      session_id: this.session_id
+    };
+    var apikey = "";
+    var param = {
+      apikey,
+      request
+    };
+    var type = "post";
+    var url = "/IBUS/DAIG_SYS/get_report_datas";
+    this.getReport_datas(type, url, param);
     this.showChart1();
     this.showChart2();
     this.showChart3();
@@ -2540,7 +2541,23 @@ export default {
         this.mychart13.resize();
       });
     },
-    getReport_datas() {}
+    getReport_datas(type, url, param) {
+      let $this = this;
+      $this
+        .$http({
+          method: type,
+          url: url,
+          data: param
+        })
+        .then(res => {
+          console.log(res);
+          $this.reportData.scale = res.data.return.report_info.scale;
+          
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
   },
   computed: {
     reportParm() {
