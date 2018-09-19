@@ -8,10 +8,10 @@
                         <!-- <v-flex  lg1 md1 sm1 xs1 ></v-flex> -->
                         <v-flex lg12 md12 sm12 xs12 align-end flexbox>
                             <v-layout>
-                                <v-flex  lg3 md2 sm2 xs2 style="padding: 0 4%;">
-                                    <img :src="companyDetails.logo!==''?companyDetails.logo!==null?'/IMAGE/'+companyDetails.logo:'/static/imgs/noImage.png':'/static/imgs/noImage.png'" style="width: 100%;height: 100%;" >
+                                <v-flex  lg3 md4 sm4 xs5 style="padding: 0 4%;">
+                                    <img :src="companyDetails.logo!==''?companyDetails.logo!==null?'/IMAGE/'+companyDetails.logo:'/static/imgs/noImage.png':'/static/imgs/noImage.png'" style="width: 180px;" >
                                 </v-flex>
-                                <v-flex  lg9 md10 sm10 xs10 >
+                                <v-flex  lg9 md8 sm8 xs7 >
                                     <div class="headline">
                                         <span>{{companyDetails.enterpriseName}}</span>
                                     </div>
@@ -138,7 +138,7 @@
                                                     </span>
                                                     <v-icon
                                                     small
-                                                    @click="parent.selectItem(item)"
+                                                    @click="deleteItem(item)"
                                                     >close</v-icon>
                                                 </v-chip>
                                             </template>
@@ -168,14 +168,14 @@
                                                     </v-chip>
                                                 </v-list-tile-content>
                                                 <v-spacer></v-spacer>
-                                                <v-list-tile-action @click.stop>
+                                                <!-- <v-list-tile-action @click.stop>
                                                     <v-btn
                                                     icon
                                                     @click.stop.prevent="edit(index, item)"
                                                     >
                                                     <v-icon>{{ editing !== item ? 'edit' : 'check' }}</v-icon>
                                                     </v-btn>
-                                                </v-list-tile-action>
+                                                </v-list-tile-action> -->
                                             </template>
                                         </v-combobox>
                                     </v-layout>
@@ -204,6 +204,9 @@
                                             label="请输入备注"
                                             v-model="remark"
                                             ></v-textarea>
+                                            <div>
+                                                <span v-if="showRemarkErr" style="color: red;">备注长度不能超过125</span>
+                                            </div>
                                         </v-flex>
                                     </v-layout>
                                 </v-flex>
@@ -232,6 +235,7 @@
                                     class="mx-3"
                                     flat
                                     label="搜索"
+                                    v-model="testKey"
                                     single-line
                                     style="padding: 4px;"
                                 ></v-text-field>
@@ -243,7 +247,12 @@
                     </div>
                     <v-layout>
                         <v-flex  lg12 md12 sm12 xs12>
-                            <v-card flat v-for="item in textShowArray" :key="item.idx" hover ripple="true" style="margin: 5px 10px;">
+                            <v-card v-if="textShowArray.length == 0" hover ripple="true" style="height:400px;text-align: center;">
+                                <div style="font-size: 30px;padding-top: 10%;">
+                                    <span>没有相关测评数据</span>
+                                </div>
+                            </v-card>
+                            <v-card v-if="textShowArray.length !== 0" flat v-for="item in textShowArray" :key="item.idx" hover ripple="true" style="margin: 5px 10px;">
                                 <v-layout row wrap style="margin: 10px 0;padding: 10px;">
                                             <v-flex lg5 md6 sm12 xs12 style="text-align: left;margin: 10px 0;">
                                                 <div>
@@ -289,6 +298,22 @@
                     </v-layout>
                 </v-flex>
                 <v-flex  lg10 md10 sm10 xs10 v-if="showPanel == 3" style="background-color: white;">
+                    <div>
+                         <v-toolbar  tabs style="background-color: white;">
+                            <v-spacer></v-spacer>
+                                <v-text-field 
+                                    class="mx-3"
+                                    flat
+                                    label="搜索"
+                                    single-line
+                                    v-model="userKey"
+                                    style="padding: 4px;"
+                                ></v-text-field>
+                                <v-btn icon @click="searchUser()">
+                                    <v-icon>search</v-icon>
+                                </v-btn>    
+                        </v-toolbar>
+                    </div>
                     <div>
                         <v-card flat v-for="item in user_info" :key="item.idx" hover ripple="true">
                             <v-layout row wrap style="margin: 10px 0;padding: 10px;">
@@ -390,72 +415,8 @@
 export default {
   name: "",
   data: () => ({
-    // companyDetails: {
-    //   area: "和平区",
-    //   city: "天津市",
-    //   email: "billonese@126.com",
-    //   ent_register_time: "2018-07-09 10:21:45",
-    //   testTime: "--",
-    //   enterpriseCode: "237923734927349832F",
-    //   enterpriseName: "EHZ",
-    //   flag: [
-    //     { idx: 3, flagName: "汽车零部件" },
-    //     { idx: 4, flagName: "制造业" }
-    //   ],
-    //   idx: 17,
-    //   industryL1: "化学制品",
-    //   industryL2: "",
-    //   industryL3: "",
-    //   industryL4: "",
-    //   industryL5: "",
-    //   logo: "./image/89caf08896e311e88beb000c291f0997.png",
-    //   province: "天津市",
-    //   remark: "123",
-    //   shortName: "EHZ",
-    //   user: "HELLO KITTY",
-    //   scale: "3.000人以上",
-    //   income: "30.000万元以上",
-    //   user_id: 18
-    // },
-    // user_info: [
-    //   {
-    //     idx: 145,
-    //     name: 233,
-    //     image: null,
-    //     email: "chengyi@ehz.cn",
-    //     mobile: "15712055291",
-    //     department: "技术与产品中心",
-    //     position: "产品",
-    //     birthday: "1912-2-1",
-    //     gender: 1,
-    //     role_name: "管理员",
-    //     createTime: "2018-08-19 20:15:31"
-    //   }
-    // ],
-    // textShowArray: [
-    //   {
-    //     idx: 322,
-    //     user_id: 142,
-    //     id: 4,
-    //     name: "3C电子行业",
-    //     startTime: "2018-08-10 00:19:03",
-    //     endTime: "",
-    //     completeStatus: 0,
-    //     complete_degree: 76,
-    //     remark: "适用于电子元器件、IC、配件、电子中间件、终端产品等3C电子行业"
-    //   },
-    //   {
-    //     idx: 326,
-    //     user_id: 146,
-    //     id: 5,
-    //     name: "3C电子行业",
-    //     startTime: "2018-08-20 00:19:03",
-    //     endTime: "2018-08-20 00:27:38",
-    //     completeStatus: 1,
-    //     remark: "适用于电子元器件、IC、配件、电子中间件、终端产品等3C电子行业"
-    //   }
-    // ],
-
+    testKey: "",
+    userKey: "",
     currentItem: "tab-Web",
     textitems: [
       { state: 3, value: "全部" },
@@ -485,34 +446,85 @@ export default {
     textShowArray: [],
     showAlert: false,
     AlertMessage: "",
-    TreedataArray: []
+    TreedataArray: [],
+    showRemarkErr: false,
+    deleItem: ""
   }),
   watch: {
     model(val, prev) {
       let $this = this;
+      if (val.length == 9) {
+        // this.model = prev;
+        this.delete_flag_for_enterprise(val[val.length - 1].text);
+        this.model.pop();
+
+        this.showAlert = true;
+        this.AlertMessage = "最多只能绑定8个标签";
+        return;
+      }
       if (val.length === prev.length) return;
-
-      this.model = val.map(v => {
-        if (typeof v === "string") {
-          v = {
-            text: v
+      if (val.length > prev.length) {
+        if (typeof val[val.length - 1] === "string") {
+          let v = {
+            text: val[val.length - 1]
           };
-
-          this.items.push(v);
-          $this.add_flag_for_enterprise(v.text);
+          //    this.model.push(v);
+          //   this.items.push(v);
+          this.model[val.length - 1] = {
+            text: val[val.length - 1]
+          };
+          this.add_flag_for_enterprise(v.text);
+        } else {
+          this.add_flag_for_enterprise(val[val.length - 1].text);
         }
-
-        return v;
-      });
-
-      if(val.length < prev.length){
-          let text;
-          prev.forEach(item => {
-              if (val.indexOf(item)== -1){
-                  text =  item
-              }   
+      } else {
+        // this.model.push(prev[val.length - 1]);
+        if (this.deleItem == "") {
+          prev.forEach(function(item) {
+            if (val.indexOf(item) == -1) {
+              $this.model.push(item);
+            }
           });
-          $this.delete_flag_for_enterprise(text.text);
+        }
+      }
+
+      //   this.model = val.map(v => {
+      //     if (typeof v === "string") {
+      //       v = {
+      //         text: v
+      //       };
+
+      //       this.model.push(v);
+      //       $this.add_flag_for_enterprise(v.text);
+      //     }
+
+      //     return v;
+      //   });
+      //   this.items = val.map(v => {
+      //     if (typeof v === "string") {
+      //       v = {
+      //         text: v
+      //       };
+
+      //       this.items.push(v);
+      //     }
+      //   });
+
+      //   if (val.length < prev.length) {
+      //     let text;
+      //     prev.forEach(item => {
+      //       if (val.indexOf(item) == -1) {
+      //         text = item;
+      //       }
+      //     });
+      //     $this.delete_flag_for_enterprise(text.text);
+      //   }
+    },
+    remark(val, prev) {
+      if (val.length > 125) {
+        this.showRemarkErr = true;
+      } else {
+        this.showRemarkErr = false;
       }
     }
   },
@@ -522,17 +534,24 @@ export default {
     },
     session_id() {
       return this.$store.state.logIn.session_id;
+    },
+    showPanel2() {
+      return this.$store.state.answerPage.showPanel2;
     }
   },
   mounted: function() {
     let $this = this;
+    this.getflagInfo();
     this.companyDetails.flag.forEach(element => {
       $this.model.push({ text: element.flagName });
-      $this.items.push({ text: element.flagName });
+      //   $this.items.push({ text: element.flagName });
     });
     this.remark =
       this.companyDetails.remark !== null ? this.companyDetails.remark : "";
     this.getEnterpriseUser();
+    if (this.showPanel2) {
+      this.switchPanel(2);
+    }
   },
   methods: {
     edit(index, item) {
@@ -561,17 +580,54 @@ export default {
     },
     switchPanel(e) {
       this.showPanel = e;
+      this.remark = "";
+      this.testKey = "";
       if (e == 2) {
         this.getEnterpriseTestAllInfo();
       }
     },
     switchTest(e) {
       this.TestState = e;
-      this.TestState == 1
-        ? (this.textShowArray = this.testendArray)
-        : this.TestState == 2
-          ? (this.textShowArray = this.testingArray)
-          : (this.textShowArray = this.EnterpriseTestAllInfo);
+
+      this.loading = true;
+      let $this = this;
+      let apikey = "",
+        request = {
+          session_id: this.session_id,
+          key: this.testKey,
+          enterprise_id: this.companyDetails.idx,
+          status: this.TestState
+        },
+        type = "POST",
+        url = "/IBUS/DAIG_SER/getEnterpriseTestAllInfo";
+      let param = {
+        apikey,
+        request
+      };
+      $this
+        .$http({
+          method: type,
+          url: url,
+          data: param
+        })
+        .then(res => {
+          $this.loading = false;
+          //   $this.EnterpriseTestAllInfo = res.data.return;
+          //   $this.testingArray = res.data.return.doing;
+          //   $this.testendArray = res.data.return.done;
+          //   $this.EnterpriseTestAllInfo = $this.testingArray.concat(
+          //     $this.testendArray
+          //   );
+          $this.textShowArray = res.data.return.info;
+          //   $this.TestState == 1
+          //     ? ($this.textShowArray = $this.testendArray)
+          //     : $this.TestState == 2
+          //       ? ($this.textShowArray = $this.testingArray)
+          //       : ($this.textShowArray = $this.EnterpriseTestAllInfo);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     getEnterpriseUser() {
       this.loading = true;
@@ -605,6 +661,11 @@ export default {
       this.markedReadonly = !this.markedReadonly;
     },
     saveMarked() {
+      if (this.showRemarkErr) {
+        this.showAlert = true;
+        this.AlertMessage = "备注长度不能超过125";
+        return;
+      }
       this.loading = true;
       let $this = this;
       let apikey = "",
@@ -657,17 +718,46 @@ export default {
         })
         .then(res => {
           $this.loading = false;
-          $this.EnterpriseTestAllInfo = res.data.return;
+          //   $this.EnterpriseTestAllInfo = res.data.return;
           $this.testingArray = res.data.return.doing;
           $this.testendArray = res.data.return.done;
           $this.EnterpriseTestAllInfo = $this.testingArray.concat(
             $this.testendArray
           );
-          $this.TestState == 1
-            ? ($this.textShowArray = $this.testendArray)
-            : $this.TestState == 2
-              ? ($this.textShowArray = $this.testingArray)
-              : ($this.textShowArray = $this.EnterpriseTestAllInfo);
+          //   $this.TestState == 1
+          //     ? ($this.textShowArray = $this.testendArray)
+          //     : $this.TestState == 2
+          //       ? ($this.textShowArray = $this.testingArray)
+          //       : ($this.textShowArray = $this.EnterpriseTestAllInfo);
+          $this.textShowArray = $this.EnterpriseTestAllInfo;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    getflagInfo() {
+      this.loading = true;
+      let $this = this;
+      let apikey = "",
+        request = {
+          type: 3
+        },
+        type = "POST",
+        url = "/IBUS/DAIG_SER/get_flag_info";
+      let param = {
+        apikey,
+        request
+      };
+      $this
+        .$http({
+          method: type,
+          url: url,
+          data: param
+        })
+        .then(res => {
+          res.data.return.info.forEach(element => {
+            $this.items.push({ text: element.flagName });
+          });
         })
         .catch(error => {
           console.log(error);
@@ -704,8 +794,8 @@ export default {
           console.log(error);
         });
     },
-    delete_flag_for_enterprise (e){
-        this.loading = true;
+    delete_flag_for_enterprise(e) {
+      this.loading = true;
       let $this = this;
       let apikey = "",
         request = {
@@ -729,14 +819,16 @@ export default {
           if (res.data.errorCode !== 0) {
             $this.showAlert = true;
             $this.AlertMessage = res.data.errorMsg;
+          } else {
+            $this.deleItem = "";
           }
         })
         .catch(error => {
           console.log(error);
         });
     },
-    changeFlag(e){
-        console.log(e);
+    changeFlag(e) {
+      console.log(e);
     },
     get_tree_struct_data(id) {
       this.loading = true;
@@ -763,6 +855,8 @@ export default {
             "answerPage/getTreedataArray",
             res.data.tree_struct
           );
+          $this.$store.commit("SET_TreedataArray", res.data.tree_struct);
+
           $this.$router.push("/answerPage");
         })
         .catch(error => {
@@ -798,6 +892,7 @@ export default {
             $this.AlertMessage = res.data.errorMsg;
           } else {
             $this.loading = false;
+
             $this.$store.commit("answerPage/getAnswerDetails", res.data);
             $this.$store.commit("answerPage/getTestName", e.name);
             $this.$store.commit(
@@ -808,6 +903,17 @@ export default {
               "answerPage/getEnterpriseLogo",
               $this.companyDetails.logo
             );
+            $this.$store.commit("SET_AnswerDetails", res.data);
+            $this.$store.commit("SET_TestName", e.name);
+            $this.$store.commit(
+              "SET_EnterpriseName",
+              $this.companyDetails.enterpriseName
+            );
+            $this.$store.commit(
+              "SET_EnterpriseLogo",
+              $this.companyDetails.logo
+            );
+
             $this.get_tree_struct_data(e.id);
           }
         })
@@ -817,18 +923,76 @@ export default {
     },
     viewReport(e) {
       this.$store.commit("reportPage/getReportParm", {
-          key:"evaluationId",value:e.id
+        key: "evaluationId",
+        value: e.id
       });
       this.$store.commit("reportPage/getReportParm", {
-          key:"enterpriseId",value:this.companyDetails.idx
+        key: "enterpriseId",
+        value: this.companyDetails.idx
       });
       this.$store.commit("reportPage/getReportParm", {
-          key:"idx",value:e.idx
+        key: "idx",
+        value: e.idx
       });
+      this.$store.commit("SET_EvaluationId", e.id);
+      this.$store.commit("SET_EnterpriseId", this.companyDetails.idx);
+      this.$store.commit("SET_EvaluationIdx", e.idx);
+
       this.$router.push("/reportPage");
     },
     searchTest() {
-      console.log("searchTest");
+      this.loading = true;
+      let $this = this;
+      let apikey = "",
+        request = {
+          session_id: this.session_id,
+          key: this.testKey,
+          enterprise_id: this.companyDetails.idx,
+          status: this.TestState
+        },
+        type = "POST",
+        url = "/IBUS/DAIG_SER/getEnterpriseTestAllInfo";
+      let param = {
+        apikey,
+        request
+      };
+      $this
+        .$http({
+          method: type,
+          url: url,
+          data: param
+        })
+        .then(res => {
+          $this.loading = false;
+          //   $this.EnterpriseTestAllInfo = res.data.return;
+          //   $this.testingArray = res.data.return.doing;
+          //   $this.testendArray = res.data.return.done;
+          //   $this.EnterpriseTestAllInfo = $this.testingArray.concat(
+          //     $this.testendArray
+          //   );
+          $this.textShowArray = res.data.return.info;
+          //   $this.TestState == 1
+          //     ? ($this.textShowArray = $this.testendArray)
+          //     : $this.TestState == 2
+          //       ? ($this.textShowArray = $this.testingArray)
+          //       : ($this.textShowArray = $this.EnterpriseTestAllInfo);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    searchUser() {},
+    deleteItem(e) {
+      console.log(e);
+      let array = [];
+      this.model.forEach(function(item) {
+        if (item.text !== e.text) {
+          array.push(item);
+        }
+      });
+      this.deleItem = e;
+      this.model = array;
+      this.delete_flag_for_enterprise(e.text);
     }
   }
 };

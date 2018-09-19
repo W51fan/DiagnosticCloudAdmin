@@ -7,25 +7,35 @@
                         <v-layout row wrap>
                             <v-flex lg12 md12 sm12 xs12 align-end flexbox>
                                 <v-layout>
-                                    <v-flex lg3 md3 sm3 xs3 style="padding: 0 3% 0 0;max-height: 82px;">
-                                        <img :src="enterpriseLogo!==''?enterpriseLogo!==null?'/IMAGE/'+enterpriseLogo:'/static/imgs/noImage.png':'/static/imgs/noImage.png'" style="width: 100%;height: 100%;" >
+                                    <v-flex lg3 md3 sm3 xs3 style="padding: 0 3% 0 0;max-height: 180px;">
+                                        <img :src="enterpriseLogo!==''?enterpriseLogo!==null?'/IMAGE/'+enterpriseLogo:'/static/imgs/noImage.png':'/static/imgs/noImage.png'" style="width: 180px;" >
                                     </v-flex>
                                     <v-flex lg9 md9 sm9 xs9 >
                                         <v-layout row wrap>
                                             <v-flex lg5 md10 sm10 xs10 >
-                                                    <div class="headline">
+                                                    <div class="headline" style="margin: 30px 0 0;">
                                                         <span>{{reportData.enterpriseName}}</span>
                                                     </div>
                                                     <div style="padding: 10px 0;font-size: 20px;">
                                                         <span>{{reportData.testName}}</span>
                                                     </div>
                                                 </v-flex>
-                                                <v-flex lg5 md10 sm10 xs10 style="margin: 12px 0;">
+                                                <v-flex lg5 hidden-md-and-down style="margin: 12px 0;">
+                                                    <div style="padding: 65px 0;">
+                                                       <span>报告完成时间：{{reportData.createTime}}</span>
+                                                    </div>
+                                                </v-flex>
+                                                <v-flex hidden-lg-and-up md10 sm10 xs10 style="margin: 12px 0;">
                                                     <div style="padding: 10px 0;">
                                                        <span>报告完成时间：{{reportData.createTime}}</span>
                                                     </div>
                                                 </v-flex>
-                                                <v-flex lg2 md2 sm2 xs2 style="text-align: center;">
+                                                <v-flex lg2 hidden-md-and-down style="text-align: center;">
+                                                    <div style="padding: 65px 0;cursor: pointer;" @click="close()">
+                                                        <v-icon x-large>highlight_off</v-icon>
+                                                    </div>
+                                                </v-flex>
+                                                <v-flex hidden-lg-and-up md2 sm2 xs2 style="text-align: center;">
                                                     <div style="padding: 10px 0;cursor: pointer;" @click="close()">
                                                         <v-icon x-large>highlight_off</v-icon>
                                                     </div>
@@ -50,28 +60,34 @@
                         <v-flex lg1 md1 sm1 xs1></v-flex>
                         <v-flex lg10 md10 sm10 xs10>
                             <div>
-                                <div style="color: black;font-size: 18px;margin: 10px 0;">企业基本信息</div>
+                                <div style="color: #02929A;font-size: 22pt;margin: 30px 0px 40px 0;">企业基本信息</div>
                                 <v-flex lg12 md12 sm12 xs12>
                                     <v-divider style="color: lightgrey;"></v-divider>
                                 </v-flex>
                                 <div style="margin: 60px 0;">
-                                    <h3  style="text-align: center;margin: 36px 0;font-size: 24px;font-weight: 300;letter-spacing: normal;">{{reportData.enterpriseName}}</h3>
+                                    <!-- <h3  style="text-align: center;margin: 36px 0;font-size: 24px;font-weight: 300;letter-spacing: normal;">{{reportData.enterpriseName}}</h3> -->
+                                    <div style="text-align: left;margin: 36px 0;font-size: 30pt;font-weight: 600;letter-spacing: normal;line-height: 40px;">
+                                      <span>{{reportData.enterpriseName}}</span>
+                                    </div>
                                     <v-layout row wrap>
                                         <v-flex lg6 md6 sm6 xs6 style="text-align:center;margin:10px 0;">
-                                            <span>收入规模：</span><span>{{reportData.scale}}</span>
+                                            <span style="color: #929292;">收入规模：</span><span style="font-weight: 600;">{{reportData.income}}</span>
                                         </v-flex>
                                         <v-flex lg6 md6 sm6 xs6 style="text-align:center;margin:10px 0;">
-                                            <span>人员规模:</span><span>{{reportData.income}}</span>
+                                            <span style="color: #929292;">人员规模:</span><span style="font-weight: 600;">{{reportData.scale}}</span>
                                         </v-flex>
                                         <v-flex lg6 md6 sm6 xs6 style="text-align:center;margin:10px 0;">
-                                            <span>企业区域：</span><span>{{reportData.province}}</span><span>/</span><span>{{reportData.city}}</span><span>/</span><span>{{reportData.area}}</span>
+                                            <span style="color: #929292;">企业区域：</span><span style="font-weight: 600;">{{reportData.province}}</span><span style="font-weight: 600;">/</span><span style="font-weight: 600;">{{reportData.city}}</span><span style="font-weight: 600;">/</span><span style="font-weight: 600;">{{reportData.area}}</span>
                                         </v-flex>
                                         <v-flex lg6 md6 sm6 xs6 style="text-align:center;margin:10px 0;">
-                                            <span>行业类别：</span><span>{{reportData.industryL1}}</span>
+                                            <span style="color: #929292;">行业类别：</span><span style="font-weight: 600;">{{reportData.industryL1}}</span>
                                         </v-flex>
                                     </v-layout>
                                 </div>
                             </div>
+                            <v-flex lg12 md12 sm12 xs12 style="margin:0 0 36px 0;">
+                              <v-divider style="color: lightgrey;"></v-divider>
+                            </v-flex>
                         </v-flex>
                         <v-flex lg1 md1 sm1 xs1></v-flex>
                     </v-layout>
@@ -80,12 +96,12 @@
                         <v-flex lg1 md1 sm1 xs1></v-flex>
                         <v-flex lg10 md10 sm10 xs10>
                             <div>
-                                <div style="color: black;font-size: 18px;margin: 10px 0;">整体结果</div>
+                                <div style="color: #149AA1;font-size: 22pt;margin: 30px 0px 70px 0;">整体结果</div>
                                 <v-flex lg12 md12 sm12 xs12 style="margin:0 0 36px 0;">
                                     <v-divider style="color: lightgrey;"></v-divider>
                                 </v-flex>
                                 <div>
-                                    <h3  style="margin: 36px 0;font-weight: 300;letter-spacing: normal;font-size: 24px;">企业能力整体成熟度</h3>
+                                    <h3  style="margin: 36px 0 72px 0;font-weight: 600;letter-spacing: normal;font-size: 24pt;">企业能力整体成熟度</h3>
                                     <v-layout row wrap>
                                         <v-flex lg12 md12 sm12 xs12>
                                             <div id="chartOption1" style="width:100%;height:400px"></div>
@@ -126,12 +142,12 @@
                         <v-flex lg1 md1 sm1 xs1></v-flex>
                         <v-flex lg10 md10 sm10 xs10>
                             <div>
-                                <div style="color: black;font-size: 18px;margin: 10px 0;">综合分析</div>
+                                <div style="color: #149AA1;font-size: 22pt;margin: 30px 0px 70px 0;">综合分析</div>
                                 <v-flex lg12 md12 sm12 xs12 style="margin:0 0 36px 0;">
                                     <v-divider style="color: lightgrey;"></v-divider>
                                 </v-flex>
                                 <div>
-                                    <h3  style="margin: 36px 0;font-weight: 300;letter-spacing: normal;font-size: 24px;">{{repoertLevel2Data1.label}}模块分析</h3>
+                                    <h3  style="margin: 36px 0 72px 0;font-weight: 600;letter-spacing: normal;font-size: 24pt;">{{repoertLevel2Data1.label}}模块分析</h3>
                                     <v-layout row wrap>
                                         <v-flex lg12 md12 sm12 xs12>
                                         <div id="chartOption2" style="width:100%;height:400px"></div>  
@@ -144,9 +160,9 @@
                                                     <v-flex v-for="item in repoertLevel2Data1.key" :key="item.label" style="margin: 10px 0;" lg6 md6 sm12 xs12>
                                                         <span style="font-size:16px;font-weight: 600;margin: 10px;">{{item.label}}</span>
                                                         <span>该模块的能力成熟度为：</span>
-                                                        <span style="color:blue;font-size:14px;font-weight: 600;">{{item.active}}%</span>
+                                                        <span style="color:#02929A;font-size:14px;font-weight: 600;">{{item.active}}%</span>
                                                         <span style="margin-left:20px;">期望：</span>
-                                                        <span style="color:#F9713C;font-size:14px;font-weight: 600;">{{item.expect}}%</span>
+                                                        <span style="color:#FF963D;font-size:14px;font-weight: 600;">{{item.expect}}%</span>
                                                     </v-flex>
                                                     <!-- <v-flex v-for="item in repoertLevel2Data1.key" :key="item.label" lg1 hidden-lg-and-down></v-flex> -->
                                                 </v-layout>
@@ -159,7 +175,7 @@
                                     <v-divider style="color: lightgrey;"></v-divider>
                                 </v-flex>
                                 <div>
-                                    <h3 style="margin: 36px 0;font-weight: 300;letter-spacing: normal;font-size: 24px;">{{repoertLevel2Data1.label}}同行业分析</h3>
+                                    <h3 style="margin: 36px 0 72px 0;font-weight: 600;letter-spacing: normal;font-size: 24pt;">{{repoertLevel2Data1.label}}同行业分析</h3>
                                     <div v-if="chart3OthersData.length!==0">
                                     <v-layout row wrap>
                                         <v-flex lg12 md12 sm12 xs12>
@@ -169,17 +185,17 @@
                                     
                                     <div style="margin: 10px;font-size: 18px;">
                                         <span>您的企业{{repoertLevel2Data1.label}}综合能力超过了</span>
-                                        <span style="color:red;font-size:14px;font-weight: 600;">{{chart3IndComparePercentage1}}%</span>
+                                        <span style="color:#02929A;font-size:14px;font-weight: 600;">{{chart3IndComparePercentage1}}%</span>
                                         <span>的企业</span>
                                     </div>
                                     </div>
                                     <div v-if="chart3OthersData.length ==0">暂无数据</div>
                                 </div>
-                                <v-flex lg12 md12 sm12 xs12 style="margin:30px 0;">
+                                <!-- <v-flex lg12 md12 sm12 xs12 style="margin:30px 0;">
                                     <v-divider style="color: lightgrey;"></v-divider>
-                                </v-flex>
+                                </v-flex> -->
                                 <div>
-                                    <h3 style="margin: 36px 0;font-weight: 300;letter-spacing: normal;font-size: 24px;">{{repoertLevel2Data1.label}}同地区分析</h3>
+                                    <h3 style="margin: 36px 0 72px 0;font-weight: 600;letter-spacing: normal;font-size: 24pt;">{{repoertLevel2Data1.label}}同地区分析</h3>
                                     <div v-if="chart4OthersData.length !==0">
                                     <v-layout row wrap>
                                         <v-flex lg12 md12 sm12 xs12>
@@ -188,7 +204,7 @@
                                     </v-layout>
                                     <div style="margin: 10px;font-size: 16px;">
                                         <span>您的企业{{repoertLevel2Data1.label}}综合能力超过了</span>
-                                        <span style="color:red;font-size:14px;font-weight: 600;">{{chart3ProvinceComparePercentage1}}%</span>
+                                        <span style="color:#02929A;font-size:14px;font-weight: 600;">{{chart3ProvinceComparePercentage1}}%</span>
                                         <span>的企业</span>
                                     </div>
                                     </div>
@@ -198,7 +214,7 @@
                                     <v-divider style="color: lightgrey;"></v-divider>
                                 </v-flex>
                                 <div>
-                                    <!-- <h3 style="margin: 36px 0;font-weight: 300;letter-spacing: normal;font-size: 24px;">{{repoertLevel2Data1.label}}同地区分析</h3> -->
+                                    <!-- <h3 style="margin: 36px 0 72px 0;font-weight: 600;letter-spacing: normal;font-size: 24pt;">{{repoertLevel2Data1.label}}同地区分析</h3> -->
                                     <div v-if="chart5OthersData.length !==0">
                                     <v-layout row wrap>
                                         <v-flex lg12 md12 sm12 xs12>
@@ -207,7 +223,7 @@
                                     </v-layout>
                                     <div style="margin: 10px;font-size: 16px;">
                                         <span>您的企业{{repoertLevel2Data1.label}}综合能力超过了</span>
-                                        <span style="color:red;font-size:14px;font-weight: 600;">{{chart3CityComparePercentage1}}%</span>
+                                        <span style="color:#02929A;font-size:14px;font-weight: 600;">{{chart3CityComparePercentage1}}%</span>
                                         <span>的企业</span>
                                     </div>
                                     </div>
@@ -217,7 +233,7 @@
                                     <v-divider style="color: lightgrey;"></v-divider>
                                 </v-flex>
                                 <div>
-                                    <!-- <h3 style="margin: 36px 0;font-weight: 300;letter-spacing: normal;font-size: 24px;">{{repoertLevel2Data1.label}}同地区分析</h3> -->
+                                    <!-- <h3 style="margin: 36px 0 72px 0;font-weight: 600;letter-spacing: normal;font-size: 24pt;">{{repoertLevel2Data1.label}}同地区分析</h3> -->
                                     <div v-if="chart6OthersData.length !==0">
                                     <v-layout row wrap>
                                         <v-flex lg12 md12 sm12 xs12>
@@ -226,7 +242,7 @@
                                     </v-layout>
                                     <div style="margin: 10px;font-size: 16px;">
                                         <span>您的企业{{repoertLevel2Data1.label}}综合能力超过了</span>
-                                        <span style="color:red;font-size:14px;font-weight: 600;">{{chart3CountyComparePercentage1}}%</span>
+                                        <span style="color:#02929A;font-size:14px;font-weight: 600;">{{chart3CountyComparePercentage1}}%</span>
                                         <span>的企业</span>
                                     </div>
                                     </div>
@@ -236,7 +252,7 @@
                                     <v-divider style="color: lightgrey;"></v-divider>
                                 </v-flex>
                                 <div>
-                                    <h3 style="margin: 36px 0;font-weight: 300;letter-spacing: normal;font-size: 24px;">{{repoertLevel2Data1.label}}指标解读及分析</h3>
+                                    <h3 style="margin: 36px 0 72px 0;font-weight: 600;letter-spacing: normal;font-size: 24pt;">{{repoertLevel2Data1.label}}指标解读及分析</h3>
                                     <v-layout row wrap>
                                         <v-flex lg12 md12 sm12 xs12>
                                             <ve-bar :data="chartData7" :colors="barcolors" width="100%" height="800px" ref="bar7"></ve-bar>
@@ -246,12 +262,12 @@
                                 <!-- <v-flex lg12 md12 sm12 xs12 style="margin:30px 0;">
                                     <v-divider style="color: lightgrey;"></v-divider>
                                 </v-flex> -->
-                                <div style="color: black;font-size: 18px;margin: 10px 0;">综合分析</div>
+                                <div style="color: #149AA1;font-size: 22pt;margin: 30px 0px 70px 0;">综合分析</div>
                                 <v-flex lg12 md12 sm12 xs12 style="margin:30px 0;">
                                     <v-divider style="color: lightgrey;"></v-divider>
                                 </v-flex>
                                 <div>
-                                    <h3 style="margin: 36px 0;font-weight: 300;letter-spacing: normal;font-size: 24px;">{{repoertLevel2Data2.label}}模块分析</h3>
+                                    <h3 style="margin: 36px 0 72px 0;font-weight: 600;letter-spacing: normal;font-size: 24pt;">{{repoertLevel2Data2.label}}模块分析</h3>
                                     <v-layout row wrap>
                                         <v-flex lg12 md12 sm12 xs12>
                                             <div id="chartOption13" style="width:100%;height:400px"></div>
@@ -263,8 +279,8 @@
                                                 <v-flex v-for="item in repoertLevel2Data2.key" :key="item.label" lg1 hidden-lg-and-down></v-flex>
                                                 <v-flex v-for="item in repoertLevel2Data2.key" :key="item.label" style="margin: 10px 0;" lg4 md6 sm12 xs12>
                                                     <span style="font-size:16px;font-weight: 600;margin: 10px;">{{item.label}}</span>
-                                                    <span>该模块的能力成熟度为：</span><span style="color:#02d0a6;font-size:14px;font-weight: 600;">{{item.active}}%</span>
-                                                    <span style="margin-left:20px;">期望：</span><span style="color:#1b96ef;font-size:14px;font-weight: 600;">{{item.expect}}%</span>
+                                                    <span>该模块的能力成熟度为：</span><span style="color:#1b96ef;font-size:14px;font-weight: 600;">{{item.active}}%</span>
+                                                    <span style="margin-left:20px;">期望：</span><span style="color:#c23531;font-size:14px;font-weight: 600;">{{item.expect}}%</span>
                                                 </v-flex>
                                                 <v-flex v-for="item in repoertLevel2Data2.key" :key="item.label" lg1 hidden-lg-and-down></v-flex>
                                             </v-layout>
@@ -277,7 +293,7 @@
                                     <v-divider style="color: lightgrey;"></v-divider>
                                 </v-flex>
                                 <div>
-                                    <h3 style="margin: 36px 0;font-weight: 300;letter-spacing: normal;font-size: 24px;">{{repoertLevel2Data2.label}}同行业分析</h3>
+                                    <h3 style="margin: 36px 0 72px 0;font-weight: 600;letter-spacing: normal;font-size: 24pt;">{{repoertLevel2Data2.label}}同行业分析</h3>
                                     <div v-if="chart3OthersData.length !==0">
                                     <v-layout row wrap>
                                         <v-flex lg12 md12 sm12 xs12>
@@ -287,7 +303,7 @@
                                     
                                     <div style="margin: 10px;">
                                         <span>您的企业{{repoertLevel2Data2.label}}综合能力超过了</span>
-                                        <span style="color:red;font-size:14px;font-weight: 600;">{{chart3IndComparePercentage2}}%</span>
+                                        <span style="color:#02929A;font-size:14px;font-weight: 600;">{{chart3IndComparePercentage2}}%</span>
                                         <span>的企业</span>
                                     </div>
                                     </div>
@@ -297,7 +313,7 @@
                                     <v-divider style="color: lightgrey;"></v-divider>
                                 </v-flex>
                                 <div>
-                                    <h3 style="margin: 36px 0;font-weight: 300;letter-spacing: normal;font-size: 24px;">{{repoertLevel2Data2.label}}同地区分析</h3>
+                                    <h3 style="margin: 36px 0 72px 0;font-weight: 600;letter-spacing: normal;font-size: 24pt;">{{repoertLevel2Data2.label}}同地区分析</h3>
                                     <div v-if="chart4OthersData.length !==0">
                                     <v-layout row wrap>
                                         <v-flex lg12 md12 sm12 xs12>
@@ -307,7 +323,7 @@
                                     
                                     <div style="margin: 10px;font-size: 16px;">
                                         <span>您的企业{{repoertLevel2Data2.label}}综合能力超过了</span>
-                                        <span style="color:red;font-size:14px;font-weight: 600;">{{chart3ProvinceComparePercentage2}}%</span>
+                                        <span style="color:#02929A;font-size:14px;font-weight: 600;">{{chart3ProvinceComparePercentage2}}%</span>
                                         <span>的企业</span>
                                     </div>
                                     </div>
@@ -317,7 +333,7 @@
                                     <v-divider style="color: lightgrey;"></v-divider>
                                 </v-flex>
                                 <div>
-                                    <!-- <h3 style="margin: 36px 0;font-weight: 300;letter-spacing: normal;font-size: 24px;">{{repoertLevel2Data2.label}}同地区分析</h3> -->
+                                    <!-- <h3 style="margin: 36px 0 72px 0;font-weight: 600;letter-spacing: normal;font-size: 24pt;">{{repoertLevel2Data2.label}}同地区分析</h3> -->
                                     <div v-if="chart5OthersData.length !==0">
                                     <v-layout row wrap>
                                         <v-flex lg12 md12 sm12 xs12>
@@ -327,7 +343,7 @@
                                     
                                     <div style="margin: 10px;font-size: 16px;">
                                         <span>您的企业{{repoertLevel2Data2.label}}综合能力超过了</span>
-                                        <span style="color:red;font-size:14px;font-weight: 600;">{{chart3CityComparePercentage2}}%</span>
+                                        <span style="color:#02929A;font-size:14px;font-weight: 600;">{{chart3CityComparePercentage2}}%</span>
                                         <span>的企业</span>
                                     </div>
                                     </div>
@@ -337,7 +353,7 @@
                                     <v-divider style="color: lightgrey;"></v-divider>
                                 </v-flex>
                                 <div>
-                                    <!-- <h3 style="margin: 36px 0;font-weight: 300;letter-spacing: normal;font-size: 24px;">{{repoertLevel2Data2.label}}同地区分析</h3> -->
+                                    <!-- <h3 style="margin: 36px 0 72px 0;font-weight: 600;letter-spacing: normal;font-size: 24pt;">{{repoertLevel2Data2.label}}同地区分析</h3> -->
                                     <div v-if="chart6OthersData.length !==0">
                                     <v-layout row wrap>
                                         <v-flex lg12 md12 sm12 xs12>
@@ -347,7 +363,7 @@
                                     
                                     <div style="margin: 10px;font-size: 16px;">
                                         <span>您的企业{{repoertLevel2Data2.label}}综合能力超过了</span>
-                                        <span style="color:red;font-size:14px;font-weight: 600;">{{chart3CountyComparePercentage2}}%</span>
+                                        <span style="color:#02929A;font-size:14px;font-weight: 600;">{{chart3CountyComparePercentage2}}%</span>
                                         <span>的企业</span>
                                     </div>
                                     </div>
@@ -357,7 +373,7 @@
                                     <v-divider style="color: lightgrey;"></v-divider>
                                 </v-flex>
                                 <div>
-                                    <h3 style="margin: 36px 0;font-weight: 300;letter-spacing: normal;font-size: 24px;">{{repoertLevel2Data2.label}}指标解读及分析</h3>
+                                    <h3 style="margin: 36px 0 72px 0;font-weight: 600;letter-spacing: normal;font-size: 24pt;">{{repoertLevel2Data2.label}}指标解读及分析</h3>
                                     <v-layout row wrap>
                                         <v-flex lg12 md12 sm12 xs12>
                                             <ve-bar :data="chartData12" :colors="barcolors" width="100%" height="800px" ref="bar12"></ve-bar>
@@ -496,7 +512,7 @@ export default {
     loading: Object,
     showErrAlert: false,
     alertMessage: "",
-    barcolors:["#1b96ef","#F9713C"],
+    barcolors: ["#02929A", "#FF963C"],
     enterpriseLogo:""
   }),
   mounted: function() {
@@ -1393,11 +1409,11 @@ export default {
               return (
                 params.name +
                 " <br/>" +
-                "制造水平" +
+                xAxis +
                 params.value[0] +
                 "%" +
                 " <br/>" +
-                "智能水平" +
+                yAxis +
                 params.value[1] +
                 "%"
               );
@@ -1500,11 +1516,11 @@ export default {
               return (
                 params.name +
                 " <br/>" +
-                "制造水平" +
+                xAxis +
                 params.value[0] +
                 "%" +
                 " <br/>" +
-                "智能水平" +
+                yAxis +
                 params.value[1] +
                 "%"
               );
@@ -1586,32 +1602,38 @@ export default {
           itemGap: 20,
           selectedMode: "multiple"
         },
-        radar: [
-          {
+        radar: {
             indicator: indicatorArray,
-            shape: "circle",
-            splitLine: {
-              lineStyle: {
-                color: [
-                  "rgba(0, 134,128, 0.1)",
-                  "rgba(0, 134,128, 0.1)",
-                  "rgba(0, 134,128, 0.1)",
-                  "rgba(0, 134,128, 0.1)",
-                  "rgba(0, 134,128, 0.1)",
-                  "rgba(0, 134,128, 0.1)"
-                ].reverse()
-              }
-            },
-            name: {
-              textStyle: {
-                color: "#333"
-              }
-            },
-            splitArea: {
-              show: false
+          shape: "circle",
+          name: {
+            textStyle: {
+              color: "#333"
             }
-          }
-        ],
+          },
+          splitLine: {
+            lineStyle: {
+              color: [
+                "rgba(0, 134,128, 0.1)",
+                "rgba(0, 134,128, 0.1)",
+                "rgba(0, 134,128, 0.1)",
+                "rgba(0, 134,128, 0.1)",
+                "rgba(0, 134,128, 0.1)",
+                "rgba(0, 134,128, 0.1)"
+              ].reverse()
+            }
+          },
+          splitArea: {
+            show: true,
+            areaStyle: {
+              color: [
+                "rgba(2, 146, 154, 0.1)",
+                "rgba(2, 146, 154, 0.1)",
+                "rgba(2, 146, 154, 0.1)",
+                "rgba(2, 146, 154, 0.1)",
+                "rgba(2, 146, 154, 0.1)"
+              ]
+            }
+          }},
         series: [
           {
             name: "雷达图",
@@ -1637,7 +1659,7 @@ export default {
                 // },
                 itemStyle: {
                   normal: {
-                    color: "blue"
+                    color: "#02929A"
                   }
                 }
               },
@@ -1654,7 +1676,7 @@ export default {
                 // },
                 itemStyle: {
                   normal: {
-                    color: "#F9713C"
+                    color: "#FF963D"
                   }
                 }
               }
@@ -1675,8 +1697,13 @@ export default {
           selectedMode: "multiple"
         },
         radar: {
-          indicator: indicator,
+         indicator: indicator,
           shape: "circle",
+          name: {
+            textStyle: {
+              color: "#333"
+            }
+          },
           splitLine: {
             lineStyle: {
               color: [
@@ -1689,13 +1716,17 @@ export default {
               ].reverse()
             }
           },
-          name: {
-            textStyle: {
-              color: "#333"
-            }
-          },
           splitArea: {
-            show: false
+            show: true,
+            areaStyle: {
+              color: [
+                "rgba(2, 146, 154, 0.1)",
+                "rgba(2, 146, 154, 0.1)",
+                "rgba(2, 146, 154, 0.1)",
+                "rgba(2, 146, 154, 0.1)",
+                "rgba(2, 146, 154, 0.1)"
+              ]
+            }
           }
         },
         series: [
@@ -1712,7 +1743,7 @@ export default {
             symbol: "none",
             itemStyle: {
               normal: {
-                color: "blue"
+                color: "#02929A"
               },
               emphasis: {
                 lineStyle: {
@@ -1734,7 +1765,7 @@ export default {
             symbol: "none",
             itemStyle: {
               normal: {
-                color: "#F9713C"
+                color:"#FF963C"
               },
               emphasis: {
                 lineStyle: {
@@ -1753,6 +1784,7 @@ export default {
       return option;
     },
     close() {
+      this.$store.commit("answerPage/changeShowPanel2", true);
       this.$router.push("/CompanyDetails");
     }
   },

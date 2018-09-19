@@ -14,6 +14,15 @@ const state = {
   user: window.sessionStorage.getItem('user'),
   token: window.sessionStorage.getItem('token'),
   UserImage: window.sessionStorage.getItem('UserImage'),
+  companyDetails: window.sessionStorage.getItem('CompanyDetails'),
+  evaluationId: window.sessionStorage.getItem('evaluationId'),
+  enterpriseId: window.sessionStorage.getItem('enterpriseId'),
+  evaluationIdx: window.sessionStorage.getItem('evaluationIdx'),
+  answerDetails:window.sessionStorage.getItem('answerDetails'),
+  TreedataArray:window.sessionStorage.getItem('TreedataArray'),
+  testName:window.sessionStorage.getItem('testName'),
+  enterpriseName:window.sessionStorage.getItem('enterpriseName'),
+  enterpriseLogo:window.sessionStorage.getItem('enterpriseLogo'),
 };
 
 const mutations = {
@@ -24,13 +33,53 @@ const mutations = {
   },
   // 获取用户名
   GET_USER: (state, data) => {
-  // 把用户名存起来
+    // 把用户名存起来
     state.user = data;
     window.sessionStorage.setItem('user', data);
   },
   SET_UserImage: (state, value) => {
     state.UserImage = value;
     window.sessionStorage.setItem('UserImage', value);
+  },
+  SET_CompanyDetails: (state, value) => {
+    state.companyDetails = value;
+    let details = JSON.stringify(value)
+    window.sessionStorage.setItem('CompanyDetails', details);
+    // window.sessionStorage.CompanyDetails= value;
+  },
+  SET_EvaluationId: (state, value) => {
+    state.evaluationId = value;
+    window.sessionStorage.setItem('evaluationId', value);
+  },
+  SET_EnterpriseId: (state, value) => {
+    state.enterpriseId = value;
+    window.sessionStorage.setItem('enterpriseId', value);
+  },
+  SET_EvaluationIdx: (state, value) => {
+    state.evaluationIdx = value;
+    window.sessionStorage.setItem('evaluationIdx', value);
+  },
+  SET_AnswerDetails: (state, value) => {
+    state.answerDetails = value;
+    let details = JSON.stringify(value)
+    window.sessionStorage.setItem('answerDetails', details);
+  },
+  SET_TreedataArray: (state, value) => {
+    state.TreedataArray = value;
+    let details = JSON.stringify(value)
+    window.sessionStorage.setItem('TreedataArray', details);
+  },
+  SET_TestName: (state, value) => {
+    state.testName = value;
+    window.sessionStorage.setItem('testName', value);
+  },
+  SET_EnterpriseName: (state, value) => {
+    state.enterpriseName = value;
+    window.sessionStorage.setItem('enterpriseName', value);
+  },
+  SET_EnterpriseLogo: (state, value) => {
+    state.enterpriseLogo = value;
+    window.sessionStorage.setItem('enterpriseLogo', value);
   },
   // 登出
   LOGOUT: (state) => {
@@ -40,6 +89,8 @@ const mutations = {
     state.autoLogin30days = false;
     window.sessionStorage.removeItem('token');
     window.sessionStorage.removeItem('user');
+    window.sessionStorage.removeItem('UserImage');
+    window.sessionStorage.removeItem('CompanyDetails');
     window.localStorage.removeItem('token');
     window.localStorage.removeItem('user');
     window.localStorage.removeItem('UsereMail');

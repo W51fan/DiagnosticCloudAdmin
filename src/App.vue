@@ -11,10 +11,13 @@
             <router-view></router-view>
           </div>   
            <!-- App Footer -->
-          <v-footer height="auto" class="white pa-3 app--footer">
-            <span class="caption">华制智能 &copy; {{ new Date().getFullYear() }}</span>
+          <v-footer height="auto" class="white pa-3 app--footer" style="justify-content: center;">
+            <div style="text-align: center;">
+              <span>Copyright @2018 华制智能 All rights Reserved</span>
+            </div>
+            <!-- <span class="caption">华制智能 &copy; {{ new Date().getFullYear() }}</span>
             <v-spacer></v-spacer>
-            <span class="caption mr-1"> 扁鹊云 </span> 
+            <span class="caption mr-1"> 扁鹊云 </span>  -->
             <!-- <v-icon color="pink" small>favorite</v-icon> -->
           </v-footer>
         </v-content>

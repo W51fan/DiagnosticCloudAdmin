@@ -7,25 +7,35 @@
                         <v-layout row wrap>
                             <v-flex lg12 md12 sm12 xs12 align-end flexbox>
                                 <v-layout>
-                                    <v-flex lg3 md3 sm3 xs3 style="padding: 0 3% 0 0;max-height: 82px;">
-                                        <img :src="enterpriseLogo!==''?enterpriseLogo!==null?'/IMAGE/'+enterpriseLogo:'/static/imgs/noImage.png':'/static/imgs/noImage.png'" style="width: 100%;height: 100%;" >
+                                    <v-flex lg3 md3 sm3 xs3 style="padding: 0 3% 0 0;max-height: 180px;">
+                                        <img :src="enterpriseLogo!==''?enterpriseLogo!==null?'/IMAGE/'+enterpriseLogo:'/static/imgs/noImage.png':'/static/imgs/noImage.png'" style="width: 180px;" >
                                     </v-flex>
                                     <v-flex lg9 md9 sm9 xs9 >
                                         <v-layout row wrap>
                                             <v-flex lg5 md10 sm10 xs10 >
-                                                    <div class="headline">
+                                                    <div class="headline" style="margin: 30px 0 0;">
                                                         <span>{{enterpriseName}}</span>
                                                     </div>
                                                     <div style="padding: 10px 0;font-size: 20px;">
                                                         <span>{{testName}}</span>
                                                     </div>
                                                 </v-flex>
-                                                <v-flex lg5 md10 sm10 xs10 style="margin: 12px 0;">
-                                                    <div style="padding: 10px 0;">
-                                                        <el-progress :percentage="Math.floor(answerDetails.answered_count-1/answerDetails.count*100)" ></el-progress>
+                                                <v-flex lg5 hidden-md-and-down style="margin: 12px 0;">
+                                                    <div style="padding: 65px 0;">
+                                                        <el-progress :percentage="Math.floor(answerDetails.answered_count/answerDetails.count*100)" ></el-progress>
                                                     </div>
                                                 </v-flex>
-                                                <v-flex lg2 md2 sm2 xs2 style="text-align: center;">
+                                                <v-flex hidden-lg-and-up md10 sm10 xs10 style="margin: 12px 0;">
+                                                    <div style="padding: 15px 0;">
+                                                        <el-progress :percentage="Math.floor(answerDetails.answered_count/answerDetails.count*100)" ></el-progress>
+                                                    </div>
+                                                </v-flex>
+                                                <v-flex lg2 hidden-md-and-down style="text-align: center;">
+                                                    <div style="padding: 65px 0;cursor: pointer;" @click="close()">
+                                                        <v-icon x-large>highlight_off</v-icon>
+                                                    </div>
+                                                </v-flex>
+                                                <v-flex hidden-lg-and-up md2 sm2 xs2 style="text-align: center;">
                                                     <div style="padding: 10px 0;cursor: pointer;" @click="close()">
                                                         <v-icon x-large>highlight_off</v-icon>
                                                     </div>
@@ -84,7 +94,7 @@
                                                             <span>{{showAnswerArray.level5}}</span>
                                                         </div>
                                                         <v-spacer></v-spacer>
-                                                        <v-flex lg4 md4 sm12 xs12 style="display: inline-flex;margin: 10px 0;">
+                                                        <v-flex lg6 md6 sm12 xs12 style="display: inline-flex;margin: 10px 0;">
                                                             <div style="display: inline-flex;cursor: pointer;" @click="preQuestion()">
                                                                 <i class="material-icons" style="color: rgb(0, 150, 136);">keyboard_arrow_left</i>
                                                                 <span style="line-height: 24px;color: rgb(0, 150, 136);">前一题</span>
@@ -104,20 +114,28 @@
                                                         </v-flex>
                                                 </v-layout>
                                                 
-                                                <div style="font-weight: 600;font-size: 20px;padding: 10px 0;">
-                                                    <span style="font-size:16px;font-weight:400;">期望</span>
-                                                    <span style="font-size:16px;font-weight:400;">实际</span>
-                                                    <span style="margin-left:5px;">
-                                                        {{questionIndex}}.{{showAnswerArray.question}}
-                                                    </span>
+                                                <div style="font-weight: 600;font-size: 20px;padding: 10px 0;display: inline-flex;">
+                                                    <div style="padding: 0 5px 0 0;width: 40px;">
+                                                        <span style="font-size:16px;font-weight:400;">期望</span>
+                                                    </div>
+                                                    <div style="padding: 0 5px 0 0;width: 40px;">
+                                                        <span style="font-size:16px;font-weight:400;">实际</span>
+                                                    </div>
+                                                    <div>
+                                                        <span>
+                                                            {{questionIndex}}.{{showAnswerArray.question}}
+                                                        </span>
+                                                    </div>
                                                 </div>
                                                 <div v-for="(q, i) in showAnswerArray.answerLists" :key="q">
                                                     <div style="padding: 16px 0;display:inline-flex;font-size: 16px;">
                                                         <!-- <v-radio v-model="a" disabled :value="i+1" ></v-radio> -->
-                                                        <input type="radio"  :value="i+1"  :disabled="true" :checked="showAnswerArray.answered == i+1" style="height: 24px;width: 24px;margin-right: 16px;">
-                                                        <input type="radio"  :value="i+1"  :disabled="true" :checked="showAnswerArray.expected == i+1" style="height: 24px;width: 24px;margin-right: 16px;">
+                                                        <input type="radio"  :value="i+1"  :disabled="true" :checked="showAnswerArray.answered == i+1" style="min-width: 24px;height: 24px;width: 24px;margin-right: 20px;">
+                                                        <input type="radio"  :value="i+1"  :disabled="true" :checked="showAnswerArray.expected == i+1" style="min-width: 24px;height: 24px;width: 24px;margin-right: 20px;">
                                                         <!-- <v-radio v-model="q.expected" disabled :value="i+1" ></v-radio> -->
-                                                        <span>{{i+1}}、{{q}}</span>
+                                                        <div>
+                                                            <span>{{i+1}}、{{q}}</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 
@@ -132,6 +150,18 @@
                     </v-container>
                 </v-card>
             </v-flex>
+        </v-layout>
+        <v-layout row justify-center>
+            <v-dialog v-model="showAlert" persistent max-width="290">
+                <v-card>
+                        <v-card-title class="headline">提示</v-card-title>
+                        <v-card-text>{{AlertMessage}}</v-card-text>
+                        <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn  flat @click.native="showAlert = false">确定</v-btn>
+                        </v-card-actions>
+                </v-card>
+            </v-dialog>
         </v-layout>
     </div>
 </template>
@@ -949,12 +979,17 @@ export default {
     defaultProps: {
       children: "children",
       label: "label"
-    }
+    },
+    showAlert: false,
+    AlertMessage: ""
   }),
   watch: {
     currentQuestionIndex(newVal, oldVal) {
-      if (newVal < 0 || newVal > this.questionLength) {
-        newVal = oldVal;
+      if (newVal < 1 || newVal > this.questionLength) {
+        this.currentQuestionIndex = oldVal;
+      }
+      if (!this.isNumber(this.currentQuestionIndex)) {
+        this.currentQuestionIndex = oldVal;
       }
     }
   },
@@ -1006,18 +1041,26 @@ export default {
       ];
     },
     close() {
+      this.$store.commit("answerPage/changeShowPanel2", true);
       this.$router.push("/CompanyDetails");
     },
     changeQuestion() {
-      if (
-        this.currentQuestionIndex > this.questionLength ||
-        this.currentQuestionIndex < 0
-      )
-        return;
-      this.showAnswerArray = this.answerDetails.return[
-        this.currentQuestionIndex - 1
-      ];
-      this.questionIndex = this.currentQuestionIndex;
+      //   this.currentQuestionIndex = this.currentQuestionIndex.replace(/[^\d]/g,"");
+      if (this.isNumber(this.currentQuestionIndex)) {
+        if (
+          this.currentQuestionIndex > this.questionLength ||
+          this.currentQuestionIndex < 0
+        )
+          return;
+        this.showAnswerArray = this.answerDetails.return[
+          this.currentQuestionIndex - 1
+        ];
+        this.questionIndex = this.currentQuestionIndex;
+      }
+      //   else {
+      //     this.showAlert = true;
+      //     this.AlertMessage = "请输入正确的页码";
+      //   }
     },
     selectTree(data, node) {
       let $this = this;
@@ -1030,6 +1073,15 @@ export default {
       this.currentQuestionIndex = qIndex + 1;
       this.questionIndex = this.currentQuestionIndex;
       this.showAnswerArray = this.answerDetails.return[qIndex];
+    },
+    isNumber(val) {
+      var regPos = /^\d+(\.\d+)?$/; //非负浮点数
+      var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
+      if (regPos.test(val) || regNeg.test(val)) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 };

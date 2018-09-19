@@ -18,13 +18,38 @@ router.beforeEach((to, from, next) => {
   const token = store.state.token ? store.state.token : window.localStorage.getItem("token");
   if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
     if (token) { // 通过vuex state获取当前的token是否存在
-      store.commit("loginPage/getSession_id", token);
+      store.commit("logIn/getSession_id", token);
+      store.commit("logIn/getUser", window.sessionStorage.getItem('user'));
+      store.commit("company/getCompanyDetails", JSON.parse(window.sessionStorage.getItem('CompanyDetails')));
 
-      store.commit("loginPage/getUseremail", window.localStorage.getItem('UsereMail'));
-      store.commit("loginPage/getUsermobile", window.localStorage.getItem('UsereMobile'));
-      
-      
-      
+      store.commit("reportPage/getReportParm", {
+        key: "evaluationId",
+        value: JSON.parse(window.sessionStorage.getItem('evaluationId'))
+      });
+      store.commit("reportPage/getReportParm", {
+        key: "enterpriseId",
+        value: JSON.parse(window.sessionStorage.getItem('enterpriseId'))
+      });
+      store.commit("reportPage/getReportParm", {
+        key: "idx",
+        value: JSON.parse(window.sessionStorage.getItem('evaluationIdx'))
+      });
+
+      store.commit(
+        "answerPage/getTreedataArray",
+        JSON.parse(window.sessionStorage.getItem('TreedataArray'))
+      );
+      store.commit("answerPage/getAnswerDetails", JSON.parse(window.sessionStorage.getItem('answerDetails')));
+      store.commit("answerPage/getTestName", window.sessionStorage.getItem('testName'));
+      store.commit(
+        "answerPage/getEnterpriseName",
+        window.sessionStorage.getItem('enterpriseName')
+      );
+      store.commit(
+        "answerPage/getEnterpriseLogo",
+        window.sessionStorage.getItem('enterpriseLogo')
+      );
+
       next()
     } else {
       next({

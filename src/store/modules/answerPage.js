@@ -5,6 +5,7 @@ const state = {
     testName:"",
     enterpriseName:"",
     enterpriseLogo:"",
+    showPanel2:false
 }
 
 const getters = {}
@@ -26,6 +27,9 @@ const mutations = {
     },
     getTreedataArray(state, value) {
         state.TreedataArray = value
+    },
+    changeShowPanel2(state, value) {
+        state.showPanel2 = value
     },
 }
 

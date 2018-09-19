@@ -7,12 +7,12 @@
             <v-card class="elevation-1 pa-3">
               <v-card-text>
                 <div class="layout column align-center">
-                  <img src="/static/company.png" alt="扁鹊云" >
-                  <h1 class="flex my-4 primary--text">扁鹊云管理平台</h1>
+                  <img src="/static/company.png" alt="华制诊断云" >
+                  <h1 class="flex my-4 primary--text">华制诊断云管理平台</h1>
                 </div>                
                 <v-form>
-                  <v-text-field append-icon="person" name="login" label="admin" type="text" v-model="model.username"></v-text-field>
-                  <v-text-field append-icon="lock" name="password" label="abc123456" id="password" type="password" v-model="model.password"></v-text-field>
+                  <v-text-field append-icon="person" name="login" label="用户名" type="text" v-model="model.username"></v-text-field>
+                  <v-text-field append-icon="lock" name="password" label="密码" id="password" type="password" v-model="model.password"></v-text-field>
                 </v-form>
               </v-card-text>
               <v-card-actions>
@@ -82,7 +82,7 @@ export default {
             $this.AlertMessage = res.data.errorMsg;
           } else {
             $this.$store.commit("SET_TOKEN", res.data.return.session_id);
-            
+            $this.$store.commit("GET_USER", this.model.username);
             $this.$store.commit(
               "logIn/getSession_id",
               res.data.return.session_id

@@ -51,6 +51,7 @@ export default [
     path: '/login',
     meta: {
       public: true,
+      requireAuth: false
     },
     name: 'Login',
     component: () =>
@@ -71,20 +72,22 @@ export default [
   {
     path: '/dashboard',
     meta: {
-      breadcrumb: true
+      breadcrumb: true,
+      requireAuth: true
     },
     name: 'Dashboard',
     component: () =>
       import (
         /* webpackChunkName: "routes" */
         /* webpackMode: "lazy-once" */
-        `@/pages/Dashboard.vue`
+        `@/pages/NotFound.vue`
       )
   }, 
   {
     path: '/companyManger',
     meta: {
-      breadcrumb: true
+      breadcrumb: true,
+      requireAuth: true
     },
     name: 'CompanyManger',
     component: () =>
@@ -97,7 +100,8 @@ export default [
   {
     path: '/companyDetails',
     meta: {
-      breadcrumb: true
+      breadcrumb: true,
+      requireAuth: true
     },
     name: 'CompanyDetails',
     component: () =>
@@ -108,9 +112,52 @@ export default [
       )
   },
   {
+    path: '/userManger',
+    meta: {
+      breadcrumb: true,
+      requireAuth: true
+    },
+    name: 'UserManger',
+    component: () =>
+      import (
+        /* webpackChunkName: "routes" */
+        /* webpackMode: "lazy-once" */
+        `@/pages/NotFound.vue`
+      )
+  },
+  {
+    path: '/questionManger',
+    meta: {
+      breadcrumb: true,
+      requireAuth: true
+    },
+    name: 'QuestionManger',
+    component: () =>
+      import (
+        /* webpackChunkName: "routes" */
+        /* webpackMode: "lazy-once" */
+        `@/pages/NotFound.vue`
+      )
+  },
+  {
+    path: '/testManger',
+    meta: {
+      breadcrumb: true,
+      requireAuth: true
+    },
+    name: 'TestManger',
+    component: () =>
+      import (
+        /* webpackChunkName: "routes" */
+        /* webpackMode: "lazy-once" */
+        `@/pages/NotFound.vue`
+      )
+  },
+  {
     path: '/reportPage',
     meta: {
-      breadcrumb: false
+      breadcrumb: false,
+      requireAuth: true
     },
     name: 'ReportPage',
     component: () =>
@@ -123,7 +170,8 @@ export default [
   {
     path: '/answerPage',
     meta: {
-      breadcrumb: false
+      breadcrumb: false,
+      requireAuth: true
     },
     name: 'AnswerPage',
     component: () =>

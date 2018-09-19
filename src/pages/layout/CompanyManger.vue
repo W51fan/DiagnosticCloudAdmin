@@ -319,8 +319,9 @@
                                         </template>                    
                                     </v-select>
                                 </v-flex>
-                                <v-flex lg3 sm3 xs12>
-                                    <v-btn color="info" style="width:100%" @click="getCompanysList()">搜索</v-btn>
+                                <v-flex lg3 sm3 xs12 style="display:inline-flex;">
+                                    <v-btn color="info"  @click="getCompanysList()">搜索</v-btn>
+                                    <v-btn color="info"  @click="reset()">重置</v-btn>
                                 </v-flex>
                             </v-layout>
 
@@ -328,7 +329,17 @@
                     </v-card>
                 </v-flex>
             </v-layout>
-            <v-layout row wrap>
+
+            <v-layout row wrap v-if="hasNoCompany">
+                <v-flex lg12 sm12 xs12>
+                    <v-card hover ripple="true" style="height:400px;">
+                        <div style="font-size: 30px;padding-top: 10%;">
+                            <span>没有满足条件的企业</span>
+                        </div>
+                    </v-card>                        
+                </v-flex>
+            </v-layout>
+            <v-layout row wrap v-if="!hasNoCompany">
                 <div style="padding: 0 12px;" v-show="companyLists.length !== 0">企业列表</div>
                 <v-flex lg12 sm12 xs12>
                     <v-layout row column>
@@ -447,40 +458,7 @@ export default {
     companySizeItems: ["100人以内", "500人以内", "1000人以内", "大于1000人"],
     companyInputItems: ["1000万以内", "5000万以内", "1亿以内", "大于1亿"],
     companyInput: "",
-    labelItems: [
-      {
-        key: "标签1",
-        value: "标签1"
-      },
-      {
-        key: "标签2",
-        value: "标签2"
-      },
-      {
-        key: "标签3",
-        value: "标签3"
-      },
-      {
-        key: "标签4",
-        value: "标签4"
-      },
-      {
-        key: "标签5",
-        value: "标签5"
-      },
-      {
-        key: "标签6",
-        value: "标签6"
-      },
-      {
-        key: "标签7",
-        value: "标签7"
-      },
-      {
-        key: "标签8",
-        value: "标签8"
-      }
-    ],
+    labelItems: [],
     labelItem: "",
     RegStartDateMenu: false,
     RegStartDate: "",
@@ -492,7 +470,8 @@ export default {
     endTestDate: "",
     companyLists: "",
     showAlert: false,
-    AlertMessage: ""
+    AlertMessage: "",
+    hasNoCompany: false
   }),
   computed: {
     session_id() {
@@ -632,7 +611,6 @@ export default {
         })
         .then(res => {
           $this.labelItems = res.data.return.info;
-          //   console.log($this.labelItems);
         })
         .catch(error => {
           console.log(error);
@@ -678,10 +656,11 @@ export default {
           data: param
         })
         .then(res => {
-          $this.companyLists = res.data.return;
-          if ($this.companyLists == "") {
-            $this.showAlert = true;
-            $this.AlertMessage = "没有满足条件的企业";
+          if (res.data.errorCode == 0) {
+            $this.companyLists = res.data.return;
+            $this.hasNoCompany = false;
+          } else {
+            $this.hasNoCompany = true;
           }
         })
         .catch(error => {
@@ -691,6 +670,7 @@ export default {
     get_enterprise_user(e) {
       console.log(e);
       this.$store.commit("company/getCompanyDetails", e);
+      this.$store.commit("SET_CompanyDetails", e);
       this.$router.push("/companyDetails");
     },
     get_industry_type() {
@@ -713,6 +693,24 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    reset() {
+      this.searchKey = "";
+      this.selectProvince = "";
+      this.selectCity = "";
+      this.selectCounty = "";
+      this.SelectIndustry1 = "";
+      this.SelectIndustry2 = "";
+      this.SelectIndustry3 = "";
+      this.SelectIndustry4 = "";
+      this.SelectIndustry5 = "";
+      this.companyInput = "";
+      this.companySize = "";
+      this.startTestDate = "";
+      this.endTestDate = "";
+      this.RegStartDate = "";
+      this.RegEndDate = "";
+      this.labelItem = [];
     },
     // 选省
     choseProvince(e) {
